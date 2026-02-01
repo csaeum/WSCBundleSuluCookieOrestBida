@@ -82,7 +82,6 @@ class WSCCookieConsentExtension extends Extension implements PrependExtensionInt
                             'types' => [
                                 'auto_complete' => [
                                     'display_property' => 'name',
-                                    'id_property' => 'id',
                                     'search_properties' => ['name', 'technicalName'],
                                 ],
                                 'list_overlay' => [
