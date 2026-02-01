@@ -1,32 +1,28 @@
 # WSC Sulu Cookie Consent Bundle - Installationsanleitung
 
-Diese Anleitung beschreibt die Installation des Cookie Consent Bundles in einem Sulu CMS Projekt.
+Diese Anleitung beschreibt die Installation des Cookie Consent Bundles in einem **Sulu CMS 3.0** Projekt.
 
 ## Inhaltsverzeichnis
 
 1. [Voraussetzungen](#voraussetzungen)
 2. [Installation](#installation)
-   - [Option A: Lokales Path-Repository (Entwicklung)](#option-a-lokales-path-repository-entwicklung)
+   - [Option A: Lokales Path-Repository](#option-a-lokales-path-repository-entwicklung)
    - [Option B: Git Repository (GitHub)](#option-b-git-repository-github)
-   - [Option C: Packagist (nach Veröffentlichung)](#option-c-packagist-nach-veröffentlichung)
-3. [Bundle registrieren](#bundle-registrieren)
-4. [Routing konfigurieren](#routing-konfigurieren)
-5. [Konfiguration erstellen](#konfiguration-erstellen)
-6. [Datenbank aktualisieren](#datenbank-aktualisieren)
-7. [Assets veröffentlichen](#assets-veröffentlichen)
-8. [Standard-Cookies importieren](#standard-cookies-importieren)
-9. [In Templates einbinden](#in-templates-einbinden)
-10. [Cache leeren](#cache-leeren)
-11. [Fehlerbehebung](#fehlerbehebung)
+3. [Konfiguration](#konfiguration)
+4. [Datenbank einrichten](#datenbank-einrichten)
+5. [Assets veröffentlichen](#assets-veröffentlichen)
+6. [Standard-Cookies importieren](#standard-cookies-importieren)
+7. [In Templates einbinden](#in-templates-einbinden)
+8. [Fehlerbehebung](#fehlerbehebung)
 
 ---
 
 ## Voraussetzungen
 
-- PHP 8.1 oder höher
-- Sulu CMS 2.5 oder höher
-- Symfony 6.x oder 7.x
-- Composer
+- **PHP 8.2** oder höher
+- **Sulu CMS 3.0** (basierend auf Symfony 7.4)
+- **Composer 2.x**
+- **MySQL/MariaDB** oder PostgreSQL
 
 ---
 
@@ -34,128 +30,110 @@ Diese Anleitung beschreibt die Installation des Cookie Consent Bundles in einem 
 
 ### Option A: Lokales Path-Repository (Entwicklung)
 
-Diese Option ist ideal für die lokale Entwicklung, wenn das Bundle-Verzeichnis auf dem gleichen Rechner liegt.
+Ideal wenn das Bundle-Verzeichnis auf dem gleichen Server/Rechner liegt.
 
-**1. Bundle-Verzeichnis kopieren oder verlinken**
+**Schritt 1:** Bundle-Verzeichnis bereitstellen
 
-Kopiere das Bundle-Verzeichnis an einen beliebigen Ort, z.B.:
+Das Bundle sollte außerhalb deines Sulu-Projekts liegen, z.B.:
 ```
-/home/csaeum/PhpstormProjects/GitHub/WSCBundleSuluCookieOrestBida
+/var/www/bundles/WSCBundleSuluCookieOrestBida/
 ```
 
-**2. In der `composer.json` deines Sulu-Projekts das Repository hinzufügen:**
+Oder auf deinem Entwicklungsrechner:
+```
+/home/user/Projects/WSCBundleSuluCookieOrestBida/
+```
 
-Öffne die `composer.json` deines Sulu-Projekts und füge im `repositories`-Bereich hinzu:
+**Schritt 2:** Repository in Sulu's `composer.json` hinzufügen
+
+Öffne die `composer.json` deines Sulu-Projekts und füge hinzu:
 
 ```json
 {
     "repositories": [
         {
             "type": "path",
-            "url": "/home/csaeum/PhpstormProjects/GitHub/WSCBundleSuluCookieOrestBida",
+            "url": "/var/www/bundles/WSCBundleSuluCookieOrestBida",
             "options": {
                 "symlink": true
             }
         }
-    ],
-    "require": {
-        "...": "...",
-        "wsc/sulu-cookie-consent-bundle": "*"
-    }
+    ]
 }
 ```
 
-> **Hinweis:** Passe den Pfad an deine lokale Struktur an. Mit `"symlink": true` wird ein Symlink erstellt, sodass Änderungen am Bundle sofort wirksam werden.
-
-**3. Composer Update ausführen:**
+**Schritt 3:** Bundle installieren
 
 ```bash
-cd /pfad/zu/deinem/sulu-projekt
-composer update wsc/sulu-cookie-consent-bundle
+cd /var/www/html
+composer require wsc/sulu-cookie-consent-bundle:@dev
 ```
 
 ---
 
 ### Option B: Git Repository (GitHub)
 
-Diese Option ist ideal, wenn das Bundle auf GitHub (oder einem anderen Git-Server) liegt.
+**Schritt 1:** Bundle auf GitHub verfügbar machen
 
-**1. Bundle auf GitHub pushen:**
-
+Falls noch nicht geschehen, pushe das Bundle zu GitHub:
 ```bash
-cd /home/csaeum/PhpstormProjects/GitHub/WSCBundleSuluCookieOrestBida
+cd /path/to/WSCBundleSuluCookieOrestBida
+git init
 git add .
-git commit -m "Initial commit: WSC Sulu Cookie Consent Bundle"
-git push origin main
+git commit -m "Initial commit"
+git remote add origin https://github.com/csaeum/WSCBundleSuluCookieOrestBida.git
+git push -u origin main
 ```
 
-**2. In der `composer.json` deines Sulu-Projekts das Repository hinzufügen:**
+**Schritt 2:** Repository in Sulu's `composer.json` hinzufügen
 
 ```json
 {
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida"
+            "url": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida.git"
         }
-    ],
-    "require": {
-        "...": "...",
-        "wsc/sulu-cookie-consent-bundle": "dev-main"
-    }
+    ]
 }
 ```
 
-> **Hinweis:** `dev-main` referenziert den `main`-Branch. Für stabile Versionen nutze Git-Tags (z.B. `"^1.0"`).
-
-**3. Composer Update ausführen:**
+**Schritt 3:** Bundle installieren
 
 ```bash
-composer update wsc/sulu-cookie-consent-bundle
+cd /var/www/html
+composer require wsc/sulu-cookie-consent-bundle:dev-main
 ```
 
 ---
 
-### Option C: Packagist (nach Veröffentlichung)
+## Konfiguration
 
-Nach Veröffentlichung auf [Packagist](https://packagist.org/):
+### 1. Bundle registrieren
 
-```bash
-composer require wsc/sulu-cookie-consent-bundle
-```
-
----
-
-## Bundle registrieren
-
-Füge das Bundle in `config/bundles.php` deines Sulu-Projekts hinzu:
+Das Bundle sollte automatisch registriert werden. Falls nicht, füge es manuell in `config/bundles.php` hinzu:
 
 ```php
 <?php
 
 return [
     // ... andere Bundles ...
-
     WSC\SuluCookieConsentBundle\WSCCookieConsentBundle::class => ['all' => true],
 ];
 ```
 
----
+### 2. Routing konfigurieren
 
-## Routing konfigurieren
-
-Erstelle die Datei `config/routes/wsc_cookie_consent.yaml`:
+Erstelle `config/routes/wsc_cookie_consent.yaml`:
 
 ```yaml
 wsc_cookie_consent:
     resource: '@WSCCookieConsentBundle/Resources/config/routes.yaml'
 ```
 
----
+### 3. Bundle-Konfiguration erstellen
 
-## Konfiguration erstellen
-
-Erstelle die Datei `config/packages/wsc_cookie_consent.yaml`:
+Erstelle `config/packages/wsc_cookie_consent.yaml`:
 
 ```yaml
 wsc_cookie_consent:
@@ -176,69 +154,57 @@ wsc_cookie_consent:
     # Cookie-Einstellungen
     cookie_expires_days: 365
 
-    # Preferences-Button
+    # Preferences-Button (Floating Button zum Öffnen der Einstellungen)
     show_preferences_button: true
-    preferences_button_position: 'bottom-left'  # bottom-left, bottom-right, top-left, top-right
+    preferences_button_position: 'bottom-left'
     preferences_button_icon: '🍪'
 
-    # Custom Theme (nur wenn theme: custom)
-    # custom_background_color: '#ffffff'
-    # custom_text_color: '#333333'
-    # custom_primary_button_bg_color: '#0d6efd'
-    # custom_primary_button_text_color: '#ffffff'
-    # custom_secondary_button_bg_color: '#eeeeee'
-    # custom_secondary_button_text_color: '#333333'
-
     # Tag Manager Integration
-    google_consent_mode: false        # Google Consent Mode v2 aktivieren
-    google_tag_manager_events: false  # Events an GTM dataLayer senden
-    matomo_tag_manager_events: false  # Events an Matomo Tag Manager senden
+    google_consent_mode: false
+    google_tag_manager_events: false
+    matomo_tag_manager_events: false
 ```
 
 ---
 
-## Datenbank aktualisieren
+## Datenbank einrichten
 
-### Option 1: Schema Update (Entwicklung)
+### Mit Doctrine Schema Update (Entwicklung)
 
 ```bash
 php bin/console doctrine:schema:update --force
 ```
 
-### Option 2: Doctrine Migrations (Produktion empfohlen)
+### Mit Doctrine Migrations (Produktion)
 
 ```bash
 # Migration erstellen
 php bin/console doctrine:migrations:diff
 
-# Migration prüfen
+# Prüfen
 php bin/console doctrine:migrations:status
 
-# Migration ausführen
+# Ausführen
 php bin/console doctrine:migrations:migrate
 ```
 
 **Erstellte Tabellen:**
-- `wsc_cookie_category` - Cookie-Kategorien
-- `wsc_cookie_category_translation` - Übersetzungen der Kategorien
-- `wsc_cookie` - Cookies/Services
-- `wsc_cookie_translation` - Übersetzungen der Cookies
-- `wsc_cookie_item` - Einzelne Cookie-Einträge
-- `wsc_cookie_item_translation` - Übersetzungen der Cookie-Einträge
+- `wsc_cookie_category`
+- `wsc_cookie_category_translation`
+- `wsc_cookie`
+- `wsc_cookie_translation`
+- `wsc_cookie_item`
+- `wsc_cookie_item_translation`
 
 ---
 
 ## Assets veröffentlichen
 
-Veröffentliche die JavaScript- und CSS-Dateien:
-
 ```bash
 php bin/console assets:install public
 ```
 
-Die Assets werden nach `public/bundles/wsccookieconsent/` kopiert:
-- `js/cookieconsent.umd.js`
-- `css/cookieconsent.css`
+Die Cookie Consent JavaScript/CSS-Dateien werden nach `public/bundles/wsccookieconsent/` kopiert.
 
 ---
 
@@ -247,50 +213,54 @@ Die Assets werden nach `public/bundles/wsccookieconsent/` kopiert:
 Importiere die vordefinierten Cookie-Kategorien und Cookies:
 
 ```bash
-# Standard-Import (überspringt existierende Einträge)
 php bin/console wsc:cookie-consent:import-defaults
+```
 
-# Mit Überschreiben existierender Einträge
+Mit `--force` werden existierende Einträge aktualisiert:
+
+```bash
 php bin/console wsc:cookie-consent:import-defaults --force
-
-# Import aus eigener JSON-Datei
-php bin/console wsc:cookie-consent:import-defaults --file=/pfad/zu/custom-cookies.json
 ```
 
 **Importierte Kategorien:**
-1. Notwendig (Pflicht, vorausgewählt)
-2. Komfort
-3. Statistik
-4. Marketing
-5. Social Media
-
-**Importierte Cookies:**
-- Session-Cookie (Notwendig)
-- Cookie-Einwilligung (Notwendig)
-- Google Analytics 4 (Statistik)
-- Matomo (Statistik, deaktiviert)
-- YouTube (Social Media)
-- Google Ads (Marketing, deaktiviert)
-- Meta Pixel (Marketing, deaktiviert)
+- Notwendig (Pflicht, nicht deaktivierbar)
+- Komfort
+- Statistik
+- Marketing
+- Social Media
 
 ---
 
 ## In Templates einbinden
 
-### Option 1: Direkt im Base-Template
+Öffne dein Base-Template (z.B. `templates/base.html.twig`) und füge vor `</body>` ein:
 
-Öffne dein `templates/base.html.twig` und füge vor `</body>` ein:
+```twig
+{# Cookie Consent Banner #}
+{% if sulu_cookie_consent_enabled() %}
+    {{ sulu_cookie_consent()|raw }}
+{% endif %}
+```
+
+**Beispiel für ein vollständiges Base-Template:**
 
 ```twig
 <!DOCTYPE html>
 <html lang="{{ request.locale }}">
 <head>
-    {# ... #}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{{ content.title }}{% endblock %}</title>
+    {% block head %}{% endblock %}
 </head>
 <body>
-    {# ... dein Content ... #}
+    {% block header %}{% endblock %}
 
-    {# Cookie Consent Banner #}
+    {% block content %}{% endblock %}
+
+    {% block footer %}{% endblock %}
+
+    {# Cookie Consent - muss vor </body> stehen #}
     {% if sulu_cookie_consent_enabled() %}
         {{ sulu_cookie_consent()|raw }}
     {% endif %}
@@ -298,173 +268,117 @@ php bin/console wsc:cookie-consent:import-defaults --file=/pfad/zu/custom-cookie
 </html>
 ```
 
-### Option 2: Als Include
-
-Erstelle `templates/includes/cookie-consent.html.twig`:
-
-```twig
-{% if sulu_cookie_consent_enabled() %}
-    {{ sulu_cookie_consent()|raw }}
-{% endif %}
-```
-
-Und binde es ein:
-
-```twig
-{% include 'includes/cookie-consent.html.twig' %}
-```
-
-### Option 3: Als Sulu Snippet
-
-1. Erstelle im Sulu Admin unter "Snippets" ein neues Snippet vom Typ "Cookie Consent Banner"
-2. Binde das Snippet in deinen Seiten oder Templates ein
-
 ---
 
 ## Cache leeren
 
-Nach der Installation den Cache leeren:
-
 ```bash
-# Entwicklung
 php bin/console cache:clear
-
-# Produktion
-php bin/console cache:clear --env=prod
-php bin/console cache:warmup --env=prod
 ```
 
 ---
 
-## Überprüfung der Installation
+## Überprüfung
 
-### 1. Admin-Bereich prüfen
+### 1. Admin-Bereich
 
-Öffne den Sulu Admin und prüfe:
-- Neuer Menüpunkt "Cookie Consent" vorhanden?
-- Unterpunkte "Cookie Kategorien" und "Cookies" sichtbar?
-- Kategorien und Cookies wurden importiert?
+Öffne den Sulu Admin (`/admin`) und prüfe:
+- Neuer Menüpunkt "Cookie Consent" in der Navigation
+- Kategorien und Cookies sind sichtbar
 
-### 2. Frontend-API prüfen
+### 2. API testen
 
-Rufe im Browser auf:
-```
-https://deine-domain.de/api/cookie-consent/config
-```
+Rufe auf: `https://deine-domain.de/api/cookie-consent/config`
 
-Du solltest eine JSON-Antwort mit Konfiguration, Kategorien und Cookies erhalten.
+Du solltest eine JSON-Antwort mit der Konfiguration erhalten.
 
-### 3. Banner prüfen
+### 3. Frontend testen
 
-Öffne deine Website im Inkognito-Modus (um vorhandene Consent-Cookies zu umgehen) und prüfe:
-- Wird der Cookie-Banner angezeigt?
-- Funktionieren die Buttons?
-- Wird die Einwilligung gespeichert?
+Öffne deine Website im **Inkognito-Modus** (um vorhandene Cookies zu umgehen):
+- Cookie-Banner sollte erscheinen
+- Buttons funktionieren
+- Einwilligung wird gespeichert
 
 ---
 
 ## Fehlerbehebung
 
-### Problem: Bundle wird nicht gefunden
+### "Bundle not found"
 
-```
-[Symfony\Component\Config\Exception\FileLoaderLoadException]
-Bundle "WSCCookieConsentBundle" does not exist
-```
-
-**Lösung:**
-1. Prüfe, ob das Bundle in `config/bundles.php` registriert ist
-2. Führe `composer dump-autoload` aus
-3. Leere den Cache: `php bin/console cache:clear`
-
-### Problem: Routen nicht gefunden
-
-```
-No route found for "GET /api/cookie-consent/config"
+```bash
+composer dump-autoload
+php bin/console cache:clear
 ```
 
-**Lösung:**
-1. Prüfe, ob `config/routes/wsc_cookie_consent.yaml` existiert
-2. Leere den Cache
-3. Prüfe mit: `php bin/console debug:router | grep cookie`
+### "Route not found"
 
-### Problem: Tabellen existieren nicht
-
-```
-SQLSTATE[42S02]: Base table or view not found
+Prüfe ob `config/routes/wsc_cookie_consent.yaml` existiert:
+```bash
+php bin/console debug:router | grep cookie
 ```
 
-**Lösung:**
+### "Table not found"
+
 ```bash
 php bin/console doctrine:schema:update --force
 ```
 
-### Problem: Assets werden nicht geladen
+### Admin-Menü erscheint nicht
 
-```
-404 Not Found: /bundles/wsccookieconsent/js/cookieconsent.umd.js
-```
+1. Prüfe Berechtigungen unter "Einstellungen" → "Rollen"
+2. Füge "Cookie Consent" Berechtigung hinzu
+3. Ausloggen und neu einloggen
 
-**Lösung:**
+### Assets werden nicht geladen (404)
+
 ```bash
 php bin/console assets:install public --symlink
 ```
 
-### Problem: Admin-Menü erscheint nicht
-
-**Lösung:**
-1. Prüfe die Berechtigungen im Sulu Admin unter "Einstellungen" → "Rollen"
-2. Füge die Berechtigung "Cookie Consent" für die entsprechende Rolle hinzu
-3. Logge dich aus und wieder ein
-
-### Problem: Übersetzungen fehlen
-
-**Lösung:**
-```bash
-php bin/console cache:clear
-php bin/console translation:update --force de
-php bin/console translation:update --force en
-```
-
 ---
 
-## Deinstallation
-
-Falls du das Bundle entfernen möchtest:
+## Komplette Installations-Checkliste
 
 ```bash
-# 1. Bundle aus composer.json entfernen
-composer remove wsc/sulu-cookie-consent-bundle
+# 1. Bundle installieren
+composer require wsc/sulu-cookie-consent-bundle:@dev
 
-# 2. Bundle aus config/bundles.php entfernen
+# 2. Routing erstellen
+cat > config/routes/wsc_cookie_consent.yaml << 'EOF'
+wsc_cookie_consent:
+    resource: '@WSCCookieConsentBundle/Resources/config/routes.yaml'
+EOF
 
-# 3. Routing-Datei löschen
-rm config/routes/wsc_cookie_consent.yaml
+# 3. Konfiguration erstellen
+cat > config/packages/wsc_cookie_consent.yaml << 'EOF'
+wsc_cookie_consent:
+    enabled: true
+    banner_position: 'bottom-center'
+    banner_layout: 'box'
+    theme: 'light'
+    show_preferences_button: true
+    preferences_button_position: 'bottom-left'
+EOF
 
-# 4. Konfiguration löschen
-rm config/packages/wsc_cookie_consent.yaml
-
-# 5. Tabellen entfernen (ACHTUNG: Datenverlust!)
+# 4. Datenbank aktualisieren
 php bin/console doctrine:schema:update --force
-# Oder manuell die Tabellen löschen:
-# wsc_cookie_item_translation
-# wsc_cookie_item
-# wsc_cookie_translation
-# wsc_cookie
-# wsc_cookie_category_translation
-# wsc_cookie_category
 
-# 6. Assets entfernen
-rm -rf public/bundles/wsccookieconsent
+# 5. Assets installieren
+php bin/console assets:install public
+
+# 6. Standard-Daten importieren
+php bin/console wsc:cookie-consent:import-defaults
 
 # 7. Cache leeren
 php bin/console cache:clear
+
+# 8. Template anpassen (manuell)
+# Füge {{ sulu_cookie_consent()|raw }} vor </body> ein
 ```
 
 ---
 
 ## Support
 
-Bei Fragen oder Problemen:
 - GitHub Issues: https://github.com/csaeum/WSCBundleSuluCookieOrestBida/issues
 - Website: https://www.web-seo-consulting.eu

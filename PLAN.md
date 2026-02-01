@@ -78,6 +78,18 @@ Ein Sulu CMS Bundle für DSGVO-konforme Cookie-Verwaltung basierend auf der Ores
 10. Console Command für Datenimport
 11. README.md mit vollständiger Dokumentation
 
+### 2026-02-01 - Session 1 (Update)
+**Status:** ✅ Anpassungen für Sulu 3.0
+
+**Änderungen:**
+1. composer.json für Sulu 3.0 / Symfony 7.4 angepasst
+   - Type: `symfony-bundle` statt `sulu-bundle`
+   - PHP ^8.2
+   - Symfony ^7.0
+   - sulu/sulu als `require-dev` statt `require`
+2. README-Installation.md für Sulu 3.0 aktualisiert
+3. Konflikt mit bestehenden Sulu-Paketen behoben
+
 ---
 
 ## Erstellte Dateien

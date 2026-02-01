@@ -1,9 +1,8 @@
 {
     "name": "wsc/sulu-cookie-consent-bundle",
     "description": "Sulu CMS Bundle for GDPR-compliant cookie consent management using Orest Bida Cookie Consent library",
-    "type": "sulu-bundle",
+    "type": "symfony-bundle",
     "license": "MIT",
-    "version": "1.0.0",
     "authors": [
         {
             "name": "Christian Säum",
@@ -26,15 +25,27 @@
         "source": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida"
     },
     "require": {
-        "php": "^8.3",
-        "sulu/sulu": "^3.0",
-        "symfony/framework-bundle": "^6.0|^7.0",
+        "php": "^8.2",
+        "doctrine/doctrine-bundle": "^2.10",
         "doctrine/orm": "^2.14|^3.0",
-        "doctrine/doctrine-bundle": "^2.10"
+        "symfony/config": "^7.0",
+        "symfony/dependency-injection": "^7.0",
+        "symfony/framework-bundle": "^7.0",
+        "symfony/http-kernel": "^7.0",
+        "twig/twig": "^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.0",
-        "symfony/phpunit-bridge": "^6.0|^7.0"
+        "phpstan/phpstan": "^1.10",
+        "phpunit/phpunit": "^10.0|^11.0",
+        "sulu/sulu": "^3.0",
+        "symfony/phpunit-bridge": "^7.0"
+    },
+    "conflict": {
+        "sulu/sulu": "<2.5"
+    },
+    "suggest": {
+        "sulu/sulu": "Required for full Sulu CMS integration (^3.0 recommended)",
+        "symfony/asset-mapper": "For modern JS asset management without build process"
     },
     "autoload": {
         "psr-4": {
@@ -47,7 +58,10 @@
         }
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "branch-alias": {
