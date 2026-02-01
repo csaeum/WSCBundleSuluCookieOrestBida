@@ -11,6 +11,11 @@ services:
             - '../../Entity'
             - '../../Resources'
 
+    # Console Commands
+    WSC\SuluCookieConsentBundle\Command\ImportDefaultCookiesCommand:
+        tags:
+            - { name: console.command }
+
     # Repositories
     WSC\SuluCookieConsentBundle\Repository\CookieCategoryRepository:
         arguments:

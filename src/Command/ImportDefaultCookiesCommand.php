@@ -28,8 +28,7 @@ class ImportDefaultCookiesCommand extends Command
         private CookieCategoryRepository $categoryRepository,
         private CookieRepository $cookieRepository,
         private CookieItemRepository $cookieItemRepository,
-        private EntityManagerInterface $entityManager,
-        private string $projectDir
+        private EntityManagerInterface $entityManager
     ) {
         parent::__construct();
     }
@@ -47,6 +46,7 @@ class ImportDefaultCookiesCommand extends Command
 
         $file = $input->getOption('file');
         if (!$file) {
+            // Use the bundled default file
             $file = __DIR__ . '/../Resources/data/default-cookies.json';
         }
 
@@ -83,7 +83,7 @@ class ImportDefaultCookiesCommand extends Command
                 $stats[$result]++;
                 $io->writeln(sprintf(
                     '  %s: %s (%s)',
-                    $result === 'categoriesSkipped' ? '⏭️ ' : ($result === 'categoriesCreated' ? '✅' : '🔄'),
+                    $result === 'categoriesSkipped' ? '[SKIP]' : ($result === 'categoriesCreated' ? '[NEW]' : '[UPD]'),
                     $categoryData['technicalName'],
                     str_replace('categories', '', $result)
                 ));
@@ -100,7 +100,7 @@ class ImportDefaultCookiesCommand extends Command
                 $stats[$result]++;
                 $io->writeln(sprintf(
                     '  %s: %s (%s)',
-                    $result === 'cookiesSkipped' ? '⏭️ ' : ($result === 'cookiesCreated' ? '✅' : '🔄'),
+                    $result === 'cookiesSkipped' ? '[SKIP]' : ($result === 'cookiesCreated' ? '[NEW]' : '[UPD]'),
                     $cookieData['technicalName'],
                     str_replace('cookies', '', $result)
                 ));
