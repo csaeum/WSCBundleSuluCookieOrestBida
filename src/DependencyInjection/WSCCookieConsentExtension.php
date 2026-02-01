@@ -57,22 +57,6 @@ class WSCCookieConsentExtension extends Extension implements PrependExtensionInt
             ]);
         }
 
-        // Register snippet templates
-        if ($container->hasExtension('sulu_core')) {
-            $container->prependExtensionConfig('sulu_core', [
-                'content' => [
-                    'structure' => [
-                        'paths' => [
-                            'wsc_cookie_consent_snippets' => [
-                                'path' => __DIR__ . '/../Resources/templates/snippets',
-                                'type' => 'snippet',
-                            ],
-                        ],
-                    ],
-                ],
-            ]);
-        }
-
         if ($container->hasExtension('sulu_admin')) {
             $container->prependExtensionConfig('sulu_admin', [
                 'lists' => [
