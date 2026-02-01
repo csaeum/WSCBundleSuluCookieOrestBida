@@ -46,6 +46,7 @@ wsc_cookie_consent:
 
     # Cookie Items
     cookie_items: "Cookie Details"
+    cookie_item: "Cookie"
     cookie_name: "Cookie Name"
     cookie_lifetime: "Lifetime"
 

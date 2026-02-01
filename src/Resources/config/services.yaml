@@ -98,6 +98,12 @@ services:
         tags:
             - { name: sulu.admin, priority: -1024 }
 
+    # Cookie Category Select Provider (for dynamic form select)
+    WSC\SuluCookieConsentBundle\Content\Select\CookieCategorySelect:
+        public: true
+        arguments:
+            $categoryRepository: '@WSC\SuluCookieConsentBundle\Repository\CookieCategoryRepository'
+
     # Service for config provider
     WSC\SuluCookieConsentBundle\Service\CookieConsentConfigProvider:
         arguments:

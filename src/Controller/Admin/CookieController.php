@@ -227,6 +227,7 @@ class CookieController extends AbstractRestController
         foreach ($cookie->getCookieItems() as $item) {
             $item->setLocale($locale);
             $cookieItems[] = [
+                'type' => 'cookie_item', // Required for Sulu block type
                 'id' => $item->getId(),
                 'name' => $item->getName(),
                 'lifetime' => $item->getLifetime(),

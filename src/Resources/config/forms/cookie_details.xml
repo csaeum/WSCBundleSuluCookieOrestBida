@@ -32,24 +32,8 @@
                         <title>wsc_cookie_consent.category</title>
                     </meta>
                     <params>
-                        <param name="default_value" value="1"/>
-                        <param name="values" type="collection">
-                            <param name="1">
-                                <param name="title" value="wsc_cookie_consent.category_necessary"/>
-                            </param>
-                            <param name="2">
-                                <param name="title" value="wsc_cookie_consent.category_comfort"/>
-                            </param>
-                            <param name="3">
-                                <param name="title" value="wsc_cookie_consent.category_statistics"/>
-                            </param>
-                            <param name="4">
-                                <param name="title" value="wsc_cookie_consent.category_marketing"/>
-                            </param>
-                            <param name="5">
-                                <param name="title" value="wsc_cookie_consent.category_social_media"/>
-                            </param>
-                        </param>
+                        <param name="default_value" type="expression" value="service('WSC\\SuluCookieConsentBundle\\Content\\Select\\CookieCategorySelect').getDefaultValue()"/>
+                        <param name="values" type="expression" value="service('WSC\\SuluCookieConsentBundle\\Content\\Select\\CookieCategorySelect').getValues(locale)"/>
                     </params>
                 </property>
 
@@ -152,6 +136,45 @@
                         <info_text>wsc_cookie_consent.data_purpose_info</info_text>
                     </meta>
                 </property>
+            </properties>
+        </section>
+
+        <section name="cookie_items">
+            <meta>
+                <title>wsc_cookie_consent.cookie_items</title>
+            </meta>
+            <properties>
+                <block name="cookieItems" default-type="cookie_item">
+                    <meta>
+                        <title>wsc_cookie_consent.cookie_items</title>
+                    </meta>
+                    <types>
+                        <type name="cookie_item">
+                            <meta>
+                                <title>wsc_cookie_consent.cookie_item</title>
+                            </meta>
+                            <properties>
+                                <property name="name" type="text_line" mandatory="true" colspan="6">
+                                    <meta>
+                                        <title>wsc_cookie_consent.cookie_name</title>
+                                    </meta>
+                                </property>
+
+                                <property name="lifetime" type="text_line" colspan="6">
+                                    <meta>
+                                        <title>wsc_cookie_consent.cookie_lifetime</title>
+                                    </meta>
+                                </property>
+
+                                <property name="description" type="text_area" colspan="12">
+                                    <meta>
+                                        <title>sulu_admin.description</title>
+                                    </meta>
+                                </property>
+                            </properties>
+                        </type>
+                    </types>
+                </block>
             </properties>
         </section>
 

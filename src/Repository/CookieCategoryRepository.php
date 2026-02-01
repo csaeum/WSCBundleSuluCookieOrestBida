@@ -54,6 +54,14 @@ class CookieCategoryRepository extends ServiceEntityRepository
     /**
      * @return CookieCategory[]
      */
+    public function findAllForLocale(string $locale): array
+    {
+        return $this->findAllForList($locale);
+    }
+
+    /**
+     * @return CookieCategory[]
+     */
     public function findAllForList(string $locale): array
     {
         $categories = $this->createQueryBuilder('c')
