@@ -1,0 +1,162 @@
+<?xml version="1.0" ?>
+<form xmlns="http://schemas.sulu.io/template/template"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd">
+
+    <key>cookie_details</key>
+
+    <properties>
+        <section name="general">
+            <meta>
+                <title>sulu_admin.general</title>
+            </meta>
+            <properties>
+                <property name="technicalName" type="text_line" mandatory="true">
+                    <meta>
+                        <title>wsc_cookie_consent.technical_name</title>
+                        <info_text>wsc_cookie_consent.technical_name_info</info_text>
+                    </meta>
+                    <params>
+                        <param name="headline" value="true"/>
+                    </params>
+                </property>
+
+                <property name="name" type="text_line" mandatory="true">
+                    <meta>
+                        <title>sulu_admin.name</title>
+                    </meta>
+                </property>
+
+                <property name="categoryId" type="single_select" mandatory="true">
+                    <meta>
+                        <title>wsc_cookie_consent.category</title>
+                    </meta>
+                    <params>
+                        <param name="resource_key" value="cookie_categories"/>
+                        <param name="display_property" value="name"/>
+                        <param name="id_property" value="id"/>
+                    </params>
+                </property>
+
+                <property name="description" type="text_area">
+                    <meta>
+                        <title>sulu_admin.description</title>
+                    </meta>
+                </property>
+
+                <property name="provider" type="text_line">
+                    <meta>
+                        <title>wsc_cookie_consent.provider</title>
+                        <info_text>wsc_cookie_consent.provider_info</info_text>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="technical">
+            <meta>
+                <title>wsc_cookie_consent.technical_settings</title>
+            </meta>
+            <properties>
+                <property name="scriptUrl" type="text_line">
+                    <meta>
+                        <title>wsc_cookie_consent.script_url</title>
+                        <info_text>wsc_cookie_consent.script_url_info</info_text>
+                    </meta>
+                </property>
+
+                <property name="legalBasis" type="single_select">
+                    <meta>
+                        <title>wsc_cookie_consent.legal_basis</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="consent"/>
+                        <param name="values" type="collection">
+                            <param name="consent">
+                                <param name="title" value="wsc_cookie_consent.legal_basis_consent"/>
+                            </param>
+                            <param name="legitimate_interest">
+                                <param name="title" value="wsc_cookie_consent.legal_basis_legitimate_interest"/>
+                            </param>
+                            <param name="contract">
+                                <param name="title" value="wsc_cookie_consent.legal_basis_contract"/>
+                            </param>
+                            <param name="legal_obligation">
+                                <param name="title" value="wsc_cookie_consent.legal_basis_legal_obligation"/>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+
+                <property name="processingLocation" type="single_select">
+                    <meta>
+                        <title>wsc_cookie_consent.processing_location</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="eu"/>
+                        <param name="values" type="collection">
+                            <param name="germany">
+                                <param name="title" value="wsc_cookie_consent.location_germany"/>
+                            </param>
+                            <param name="eu">
+                                <param name="title" value="wsc_cookie_consent.location_eu"/>
+                            </param>
+                            <param name="usa">
+                                <param name="title" value="wsc_cookie_consent.location_usa"/>
+                            </param>
+                            <param name="worldwide">
+                                <param name="title" value="wsc_cookie_consent.location_worldwide"/>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+            </properties>
+        </section>
+
+        <section name="privacy">
+            <meta>
+                <title>wsc_cookie_consent.privacy_info</title>
+            </meta>
+            <properties>
+                <property name="privacyPolicyUrl" type="text_line">
+                    <meta>
+                        <title>wsc_cookie_consent.privacy_policy_url</title>
+                    </meta>
+                </property>
+
+                <property name="dataCollected" type="text_area">
+                    <meta>
+                        <title>wsc_cookie_consent.data_collected</title>
+                        <info_text>wsc_cookie_consent.data_collected_info</info_text>
+                    </meta>
+                </property>
+
+                <property name="dataPurpose" type="text_area">
+                    <meta>
+                        <title>wsc_cookie_consent.data_purpose</title>
+                        <info_text>wsc_cookie_consent.data_purpose_info</info_text>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="settings">
+            <meta>
+                <title>sulu_admin.settings</title>
+            </meta>
+            <properties>
+                <property name="position" type="number">
+                    <meta>
+                        <title>wsc_cookie_consent.position</title>
+                    </meta>
+                </property>
+
+                <property name="active" type="checkbox">
+                    <meta>
+                        <title>sulu_admin.active</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+    </properties>
+</form>

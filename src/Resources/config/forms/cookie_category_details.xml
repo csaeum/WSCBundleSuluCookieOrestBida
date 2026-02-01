@@ -1,0 +1,71 @@
+<?xml version="1.0" ?>
+<form xmlns="http://schemas.sulu.io/template/template"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/form-1.0.xsd">
+
+    <key>cookie_category_details</key>
+
+    <properties>
+        <section name="general">
+            <meta>
+                <title>sulu_admin.general</title>
+            </meta>
+            <properties>
+                <property name="technicalName" type="text_line" mandatory="true">
+                    <meta>
+                        <title>wsc_cookie_consent.technical_name</title>
+                        <info_text>wsc_cookie_consent.technical_name_info</info_text>
+                    </meta>
+                    <params>
+                        <param name="headline" value="true"/>
+                    </params>
+                </property>
+
+                <property name="name" type="text_line" mandatory="true">
+                    <meta>
+                        <title>sulu_admin.name</title>
+                    </meta>
+                </property>
+
+                <property name="description" type="text_area">
+                    <meta>
+                        <title>sulu_admin.description</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="settings">
+            <meta>
+                <title>sulu_admin.settings</title>
+            </meta>
+            <properties>
+                <property name="enabled" type="checkbox">
+                    <meta>
+                        <title>wsc_cookie_consent.enabled</title>
+                        <info_text>wsc_cookie_consent.enabled_info</info_text>
+                    </meta>
+                </property>
+
+                <property name="readOnly" type="checkbox">
+                    <meta>
+                        <title>wsc_cookie_consent.read_only</title>
+                        <info_text>wsc_cookie_consent.read_only_info</info_text>
+                    </meta>
+                </property>
+
+                <property name="position" type="number">
+                    <meta>
+                        <title>wsc_cookie_consent.position</title>
+                    </meta>
+                </property>
+
+                <property name="active" type="checkbox">
+                    <meta>
+                        <title>sulu_admin.active</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+    </properties>
+</form>

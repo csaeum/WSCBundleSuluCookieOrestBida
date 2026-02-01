@@ -1,0 +1,52 @@
+<?xml version="1.0" ?>
+<list xmlns="http://schemas.sulu.io/list-builder/list">
+    <key>cookies</key>
+    <properties>
+        <property name="id" visibility="no" translation="sulu_admin.id">
+            <field-name>id</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\Cookie</entity-name>
+        </property>
+        <property name="technicalName" visibility="always" searchability="yes" translation="wsc_cookie_consent.technical_name">
+            <field-name>technicalName</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\Cookie</entity-name>
+        </property>
+        <property name="name" visibility="always" searchability="yes" translation="sulu_admin.name">
+            <field-name>name</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\CookieTranslation</entity-name>
+            <joins>
+                <join>
+                    <entity-name>WSC\SuluCookieConsentBundle\Entity\CookieTranslation</entity-name>
+                    <field-name>WSC\SuluCookieConsentBundle\Entity\Cookie.translations</field-name>
+                    <condition>WSC\SuluCookieConsentBundle\Entity\CookieTranslation.locale = ':locale'</condition>
+                </join>
+            </joins>
+        </property>
+        <property name="categoryName" visibility="always" translation="wsc_cookie_consent.category">
+            <field-name>name</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\CookieCategoryTranslation</entity-name>
+            <joins>
+                <join>
+                    <entity-name>WSC\SuluCookieConsentBundle\Entity\CookieCategory</entity-name>
+                    <field-name>WSC\SuluCookieConsentBundle\Entity\Cookie.category</field-name>
+                </join>
+                <join>
+                    <entity-name>WSC\SuluCookieConsentBundle\Entity\CookieCategoryTranslation</entity-name>
+                    <field-name>WSC\SuluCookieConsentBundle\Entity\CookieCategory.translations</field-name>
+                    <condition>WSC\SuluCookieConsentBundle\Entity\CookieCategoryTranslation.locale = ':locale'</condition>
+                </join>
+            </joins>
+        </property>
+        <property name="provider" visibility="always" searchability="yes" translation="wsc_cookie_consent.provider">
+            <field-name>provider</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\Cookie</entity-name>
+        </property>
+        <property name="position" visibility="always" translation="wsc_cookie_consent.position">
+            <field-name>position</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\Cookie</entity-name>
+        </property>
+        <property name="active" visibility="always" translation="sulu_admin.active" type="bool">
+            <field-name>active</field-name>
+            <entity-name>WSC\SuluCookieConsentBundle\Entity\Cookie</entity-name>
+        </property>
+    </properties>
+</list>

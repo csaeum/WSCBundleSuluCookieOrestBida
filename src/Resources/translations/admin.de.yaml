@@ -1,0 +1,52 @@
+wsc_cookie_consent:
+    cookie_consent: "Cookie Consent"
+    cookie_categories: "Cookie Kategorien"
+    cookies: "Cookies"
+
+    # Fields
+    technical_name: "Technischer Name"
+    technical_name_info: "Eindeutiger technischer Bezeichner (z.B. 'analytics', 'marketing')"
+    enabled: "Vorausgewählt"
+    enabled_info: "Kategorie ist standardmäßig aktiviert"
+    read_only: "Pflicht"
+    read_only_info: "Kategorie kann nicht deaktiviert werden (z.B. für notwendige Cookies)"
+    position: "Position"
+    category: "Kategorie"
+    provider: "Anbieter"
+    provider_info: "Name des Anbieters (z.B. 'Google Ireland Limited')"
+    script_url: "Script URL"
+    script_url_info: "URL zum externen Script das bei Zustimmung geladen wird"
+
+    # Technical Settings
+    technical_settings: "Technische Einstellungen"
+    legal_basis: "Rechtsgrundlage"
+    legal_basis_consent: "Einwilligung"
+    legal_basis_legitimate_interest: "Berechtigtes Interesse"
+    legal_basis_contract: "Vertragserfüllung"
+    legal_basis_legal_obligation: "Rechtliche Verpflichtung"
+
+    processing_location: "Verarbeitungsort"
+    location_germany: "Deutschland"
+    location_eu: "EU/EWR"
+    location_usa: "USA"
+    location_worldwide: "Weltweit"
+
+    # Privacy Info
+    privacy_info: "Datenschutz-Informationen"
+    privacy_policy_url: "Datenschutz-URL"
+    data_collected: "Erhobene Daten"
+    data_collected_info: "Welche Daten werden erhoben (z.B. IP-Adresse, Nutzungsverhalten)"
+    data_purpose: "Verwendungszweck"
+    data_purpose_info: "Wofür werden die Daten verwendet"
+
+    # Cookie Items
+    cookie_items: "Cookie-Details"
+    cookie_name: "Cookie-Name"
+    cookie_lifetime: "Lebensdauer"
+
+    # Import/Export
+    import_export: "Import/Export"
+    export: "Exportieren"
+    import: "Importieren"
+    export_success: "Export erfolgreich"
+    import_success: "Import erfolgreich"

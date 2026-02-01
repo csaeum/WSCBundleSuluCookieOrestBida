@@ -1,0 +1,429 @@
+{
+    "version": "1.0.0",
+    "exportDate": "2026-02-01 12:00:00",
+    "categories": [
+        {
+            "technicalName": "necessary",
+            "enabled": true,
+            "readOnly": true,
+            "position": 1,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Notwendig",
+                    "description": "Diese Cookies sind für die Grundfunktionen der Website erforderlich und können nicht deaktiviert werden."
+                },
+                "en": {
+                    "name": "Necessary",
+                    "description": "These cookies are required for the basic functions of the website and cannot be disabled."
+                }
+            }
+        },
+        {
+            "technicalName": "comfort",
+            "enabled": false,
+            "readOnly": false,
+            "position": 2,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Komfort",
+                    "description": "Diese Cookies ermöglichen erweiterte Funktionen und Personalisierung."
+                },
+                "en": {
+                    "name": "Comfort",
+                    "description": "These cookies enable extended functions and personalization."
+                }
+            }
+        },
+        {
+            "technicalName": "analytics",
+            "enabled": false,
+            "readOnly": false,
+            "position": 3,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Statistik",
+                    "description": "Diese Cookies helfen uns zu verstehen, wie Besucher mit unserer Website interagieren."
+                },
+                "en": {
+                    "name": "Analytics",
+                    "description": "These cookies help us understand how visitors interact with our website."
+                }
+            }
+        },
+        {
+            "technicalName": "marketing",
+            "enabled": false,
+            "readOnly": false,
+            "position": 4,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Marketing",
+                    "description": "Diese Cookies werden verwendet, um Werbung relevanter für Sie zu gestalten."
+                },
+                "en": {
+                    "name": "Marketing",
+                    "description": "These cookies are used to make advertising more relevant to you."
+                }
+            }
+        },
+        {
+            "technicalName": "socialmedia",
+            "enabled": false,
+            "readOnly": false,
+            "position": 5,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Social Media",
+                    "description": "Diese Cookies ermöglichen die Integration von Social-Media-Funktionen."
+                },
+                "en": {
+                    "name": "Social Media",
+                    "description": "These cookies enable the integration of social media features."
+                }
+            }
+        }
+    ],
+    "cookies": [
+        {
+            "technicalName": "session",
+            "categoryTechnicalName": "necessary",
+            "provider": null,
+            "scriptUrl": null,
+            "legalBasis": "contract",
+            "processingLocation": "germany",
+            "position": 1,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Session-Cookie",
+                    "description": "Speichert die Sitzungsinformationen des Benutzers.",
+                    "privacyPolicyUrl": null,
+                    "dataCollected": "Session-ID",
+                    "dataPurpose": "Aufrechterhaltung der Benutzersitzung"
+                },
+                "en": {
+                    "name": "Session Cookie",
+                    "description": "Stores the user's session information.",
+                    "privacyPolicyUrl": null,
+                    "dataCollected": "Session ID",
+                    "dataPurpose": "Maintaining user session"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "PHPSESSID",
+                    "lifetime": "Session",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Standard PHP Session Cookie"
+                        },
+                        "en": {
+                            "description": "Standard PHP Session Cookie"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "cookie_consent",
+            "categoryTechnicalName": "necessary",
+            "provider": null,
+            "scriptUrl": null,
+            "legalBasis": "legal_obligation",
+            "processingLocation": "germany",
+            "position": 2,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Cookie-Einwilligung",
+                    "description": "Speichert die Cookie-Einwilligungsentscheidung des Benutzers.",
+                    "privacyPolicyUrl": null,
+                    "dataCollected": "Einwilligungsstatus",
+                    "dataPurpose": "Speicherung der Datenschutz-Einstellungen"
+                },
+                "en": {
+                    "name": "Cookie Consent",
+                    "description": "Stores the user's cookie consent decision.",
+                    "privacyPolicyUrl": null,
+                    "dataCollected": "Consent status",
+                    "dataPurpose": "Storing privacy settings"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "cc_cookie",
+                    "lifetime": "1 Jahr",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Speichert die Cookie-Einwilligungsentscheidung"
+                        },
+                        "en": {
+                            "description": "Stores the cookie consent decision"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "google_analytics_4",
+            "categoryTechnicalName": "analytics",
+            "provider": "Google Ireland Limited",
+            "scriptUrl": null,
+            "legalBasis": "consent",
+            "processingLocation": "usa",
+            "position": 1,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "Google Analytics 4",
+                    "description": "Google Analytics 4 ist ein Webanalysedienst von Google, der den Websiteverkehr verfolgt und meldet.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP-Adresse, Nutzungsdaten, Geräteinformationen, Browsertyp, Standortdaten",
+                    "dataPurpose": "Webanalyse, Conversion-Tracking, Zielgruppenbildung"
+                },
+                "en": {
+                    "name": "Google Analytics 4",
+                    "description": "Google Analytics 4 is a web analytics service from Google that tracks and reports website traffic.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP address, usage data, device information, browser type, location data",
+                    "dataPurpose": "Web analytics, conversion tracking, audience building"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "_ga",
+                    "lifetime": "2 Jahre",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Wird zur Unterscheidung von Benutzern verwendet"
+                        },
+                        "en": {
+                            "description": "Used to distinguish users"
+                        }
+                    }
+                },
+                {
+                    "name": "_ga_*",
+                    "lifetime": "2 Jahre",
+                    "position": 2,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Speichert und zählt Seitenaufrufe"
+                        },
+                        "en": {
+                            "description": "Stores and counts page views"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "matomo",
+            "categoryTechnicalName": "analytics",
+            "provider": "Matomo (Self-hosted)",
+            "scriptUrl": null,
+            "legalBasis": "consent",
+            "processingLocation": "germany",
+            "position": 2,
+            "active": false,
+            "translations": {
+                "de": {
+                    "name": "Matomo",
+                    "description": "Matomo ist eine Open-Source-Webanalyseplattform.",
+                    "privacyPolicyUrl": "https://matomo.org/privacy/",
+                    "dataCollected": "IP-Adresse (anonymisiert), Nutzungsdaten, Geräteinformationen",
+                    "dataPurpose": "Webanalyse, Nutzerverhalten verstehen"
+                },
+                "en": {
+                    "name": "Matomo",
+                    "description": "Matomo is an open-source web analytics platform.",
+                    "privacyPolicyUrl": "https://matomo.org/privacy/",
+                    "dataCollected": "IP address (anonymized), usage data, device information",
+                    "dataPurpose": "Web analytics, understanding user behavior"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "_pk_id.*",
+                    "lifetime": "13 Monate",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Speichert eine eindeutige Besucher-ID"
+                        },
+                        "en": {
+                            "description": "Stores a unique visitor ID"
+                        }
+                    }
+                },
+                {
+                    "name": "_pk_ses.*",
+                    "lifetime": "30 Minuten",
+                    "position": 2,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Kurzlebiges Cookie zur Nachverfolgung der Sitzung"
+                        },
+                        "en": {
+                            "description": "Short-lived cookie for session tracking"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "youtube",
+            "categoryTechnicalName": "socialmedia",
+            "provider": "Google Ireland Limited",
+            "scriptUrl": null,
+            "legalBasis": "consent",
+            "processingLocation": "usa",
+            "position": 1,
+            "active": true,
+            "translations": {
+                "de": {
+                    "name": "YouTube",
+                    "description": "Ermöglicht das Einbetten von YouTube-Videos auf der Website.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP-Adresse, Geräteinformationen, Wiedergabedaten",
+                    "dataPurpose": "Bereitstellung von Videoinhalten"
+                },
+                "en": {
+                    "name": "YouTube",
+                    "description": "Allows embedding of YouTube videos on the website.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP address, device information, playback data",
+                    "dataPurpose": "Providing video content"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "VISITOR_INFO1_LIVE",
+                    "lifetime": "180 Tage",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Versucht, die Bandbreite des Nutzers auf Seiten mit integrierten YouTube-Videos zu schätzen"
+                        },
+                        "en": {
+                            "description": "Tries to estimate user bandwidth on pages with integrated YouTube videos"
+                        }
+                    }
+                },
+                {
+                    "name": "YSC",
+                    "lifetime": "Session",
+                    "position": 2,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Registriert eine eindeutige ID, um Statistiken über Videos zu führen"
+                        },
+                        "en": {
+                            "description": "Registers a unique ID to keep statistics on videos"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "google_ads",
+            "categoryTechnicalName": "marketing",
+            "provider": "Google Ireland Limited",
+            "scriptUrl": null,
+            "legalBasis": "consent",
+            "processingLocation": "usa",
+            "position": 1,
+            "active": false,
+            "translations": {
+                "de": {
+                    "name": "Google Ads",
+                    "description": "Google Ads ermöglicht Conversion-Tracking und Remarketing.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP-Adresse, Nutzungsdaten, Geräteinformationen, Conversion-Daten",
+                    "dataPurpose": "Werbung, Conversion-Tracking, Remarketing"
+                },
+                "en": {
+                    "name": "Google Ads",
+                    "description": "Google Ads enables conversion tracking and remarketing.",
+                    "privacyPolicyUrl": "https://policies.google.com/privacy",
+                    "dataCollected": "IP address, usage data, device information, conversion data",
+                    "dataPurpose": "Advertising, conversion tracking, remarketing"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "_gcl_au",
+                    "lifetime": "90 Tage",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Wird von Google AdSense verwendet, um Werbungseffizienz zu messen"
+                        },
+                        "en": {
+                            "description": "Used by Google AdSense to measure advertising efficiency"
+                        }
+                    }
+                }
+            ]
+        },
+        {
+            "technicalName": "meta_pixel",
+            "categoryTechnicalName": "marketing",
+            "provider": "Meta Platforms Ireland Limited",
+            "scriptUrl": null,
+            "legalBasis": "consent",
+            "processingLocation": "usa",
+            "position": 2,
+            "active": false,
+            "translations": {
+                "de": {
+                    "name": "Meta Pixel (Facebook)",
+                    "description": "Das Meta Pixel ermöglicht Conversion-Tracking und zielgerichtete Werbung auf Facebook und Instagram.",
+                    "privacyPolicyUrl": "https://www.facebook.com/privacy/explanation",
+                    "dataCollected": "IP-Adresse, Nutzungsdaten, Geräteinformationen, Facebook-ID",
+                    "dataPurpose": "Werbung, Conversion-Tracking, Zielgruppenbildung"
+                },
+                "en": {
+                    "name": "Meta Pixel (Facebook)",
+                    "description": "The Meta Pixel enables conversion tracking and targeted advertising on Facebook and Instagram.",
+                    "privacyPolicyUrl": "https://www.facebook.com/privacy/explanation",
+                    "dataCollected": "IP address, usage data, device information, Facebook ID",
+                    "dataPurpose": "Advertising, conversion tracking, audience building"
+                }
+            },
+            "cookieItems": [
+                {
+                    "name": "_fbp",
+                    "lifetime": "90 Tage",
+                    "position": 1,
+                    "active": true,
+                    "translations": {
+                        "de": {
+                            "description": "Wird von Facebook verwendet, um Werbung zu personalisieren"
+                        },
+                        "en": {
+                            "description": "Used by Facebook to personalize advertising"
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}

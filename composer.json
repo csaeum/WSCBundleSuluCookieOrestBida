@@ -1,0 +1,57 @@
+{
+    "name": "wsc/sulu-cookie-consent-bundle",
+    "description": "Sulu CMS Bundle for GDPR-compliant cookie consent management using Orest Bida Cookie Consent library",
+    "type": "sulu-bundle",
+    "license": "MIT",
+    "version": "1.0.0",
+    "authors": [
+        {
+            "name": "Christian Säum",
+            "email": "info@web-seo-consulting.eu",
+            "homepage": "https://www.web-seo-consulting.eu"
+        }
+    ],
+    "keywords": [
+        "sulu",
+        "cms",
+        "cookie",
+        "consent",
+        "gdpr",
+        "dsgvo",
+        "orest-bida"
+    ],
+    "homepage": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida",
+    "support": {
+        "issues": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida/issues",
+        "source": "https://github.com/csaeum/WSCBundleSuluCookieOrestBida"
+    },
+    "require": {
+        "php": "^8.1",
+        "sulu/sulu": "^2.5",
+        "symfony/framework-bundle": "^6.0|^7.0",
+        "doctrine/orm": "^2.14|^3.0",
+        "doctrine/doctrine-bundle": "^2.10"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^10.0",
+        "symfony/phpunit-bridge": "^6.0|^7.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "WSC\\SuluCookieConsentBundle\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WSC\\SuluCookieConsentBundle\\Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "1.0.x-dev"
+        }
+    }
+}

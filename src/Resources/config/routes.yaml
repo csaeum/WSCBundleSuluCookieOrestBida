@@ -1,0 +1,107 @@
+# Admin Routes
+wsc_cookie_consent.get_cookie_categories:
+    path: /admin/api/cookie-categories
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController::getListAction
+    methods: [GET]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.get_cookie_category:
+    path: /admin/api/cookie-categories/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController::getAction
+    methods: [GET]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.post_cookie_category:
+    path: /admin/api/cookie-categories
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController::postAction
+    methods: [POST]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.put_cookie_category:
+    path: /admin/api/cookie-categories/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController::putAction
+    methods: [PUT]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.delete_cookie_category:
+    path: /admin/api/cookie-categories/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController::deleteAction
+    methods: [DELETE]
+    options:
+        sulu:
+            context: admin
+
+# Cookie Routes
+wsc_cookie_consent.get_cookies:
+    path: /admin/api/cookies
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieController::getListAction
+    methods: [GET]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.get_cookie:
+    path: /admin/api/cookies/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieController::getAction
+    methods: [GET]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.post_cookie:
+    path: /admin/api/cookies
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieController::postAction
+    methods: [POST]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.put_cookie:
+    path: /admin/api/cookies/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieController::putAction
+    methods: [PUT]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.delete_cookie:
+    path: /admin/api/cookies/{id}
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\CookieController::deleteAction
+    methods: [DELETE]
+    options:
+        sulu:
+            context: admin
+
+# Import/Export Routes
+wsc_cookie_consent.export:
+    path: /admin/api/cookie-consent/export
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\ImportExportController::exportAction
+    methods: [GET]
+    options:
+        sulu:
+            context: admin
+
+wsc_cookie_consent.import:
+    path: /admin/api/cookie-consent/import
+    controller: WSC\SuluCookieConsentBundle\Controller\Admin\ImportExportController::importAction
+    methods: [POST]
+    options:
+        sulu:
+            context: admin
+
+# Website API Route
+wsc_cookie_consent.api_config:
+    path: /api/cookie-consent/config
+    controller: WSC\SuluCookieConsentBundle\Controller\Website\CookieConsentController::configAction
+    methods: [GET]
+    options:
+        sulu:
+            context: website

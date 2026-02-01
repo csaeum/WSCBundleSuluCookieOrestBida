@@ -1,0 +1,114 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    WSC\SuluCookieConsentBundle\:
+        resource: '../../*'
+        exclude:
+            - '../../DependencyInjection'
+            - '../../Entity'
+            - '../../Resources'
+
+    # Repositories
+    WSC\SuluCookieConsentBundle\Repository\CookieCategoryRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags:
+            - { name: doctrine.repository_service }
+
+    WSC\SuluCookieConsentBundle\Repository\CookieRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags:
+            - { name: doctrine.repository_service }
+
+    WSC\SuluCookieConsentBundle\Repository\CookieItemRepository:
+        arguments:
+            $registry: '@doctrine'
+        tags:
+            - { name: doctrine.repository_service }
+
+    # Admin Controllers
+    WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController:
+        tags:
+            - { name: sulu.context, context: admin }
+
+    WSC\SuluCookieConsentBundle\Controller\Admin\CookieController:
+        tags:
+            - { name: sulu.context, context: admin }
+
+    WSC\SuluCookieConsentBundle\Controller\Admin\ImportExportController:
+        tags:
+            - { name: sulu.context, context: admin }
+
+    # Website Controllers
+    WSC\SuluCookieConsentBundle\Controller\Website\CookieConsentController:
+        tags:
+            - { name: sulu.context, context: website }
+
+    # Twig Extension
+    WSC\SuluCookieConsentBundle\Twig\CookieConsentExtension:
+        arguments:
+            $enabled: '%wsc_cookie_consent.enabled%'
+            $config:
+                enabled: '%wsc_cookie_consent.enabled%'
+                banner_position: '%wsc_cookie_consent.banner_position%'
+                banner_layout: '%wsc_cookie_consent.banner_layout%'
+                theme: '%wsc_cookie_consent.theme%'
+                border_radius: '%wsc_cookie_consent.border_radius%'
+                flip_buttons: '%wsc_cookie_consent.flip_buttons%'
+                equal_weight_buttons: '%wsc_cookie_consent.equal_weight_buttons%'
+                disable_page_interaction: '%wsc_cookie_consent.disable_page_interaction%'
+                cookie_expires_days: '%wsc_cookie_consent.cookie_expires_days%'
+                show_preferences_button: '%wsc_cookie_consent.show_preferences_button%'
+                preferences_button_position: '%wsc_cookie_consent.preferences_button_position%'
+                preferences_button_icon: '%wsc_cookie_consent.preferences_button_icon%'
+                custom_background_color: '%wsc_cookie_consent.custom_background_color%'
+                custom_text_color: '%wsc_cookie_consent.custom_text_color%'
+                custom_primary_button_bg_color: '%wsc_cookie_consent.custom_primary_button_bg_color%'
+                custom_primary_button_text_color: '%wsc_cookie_consent.custom_primary_button_text_color%'
+                custom_secondary_button_bg_color: '%wsc_cookie_consent.custom_secondary_button_bg_color%'
+                custom_secondary_button_text_color: '%wsc_cookie_consent.custom_secondary_button_text_color%'
+                google_consent_mode: '%wsc_cookie_consent.google_consent_mode%'
+                google_tag_manager_events: '%wsc_cookie_consent.google_tag_manager_events%'
+                matomo_tag_manager_events: '%wsc_cookie_consent.matomo_tag_manager_events%'
+        tags:
+            - { name: twig.extension }
+
+    # Admin
+    WSC\SuluCookieConsentBundle\Admin\CookieConsentAdmin:
+        arguments:
+            $viewBuilderFactory: '@sulu_admin.view_builder_factory'
+            $securityChecker: '@sulu_security.security_checker'
+        tags:
+            - { name: sulu.admin, priority: -1024 }
+
+    # Service for config provider
+    WSC\SuluCookieConsentBundle\Service\CookieConsentConfigProvider:
+        arguments:
+            $categoryRepository: '@WSC\SuluCookieConsentBundle\Repository\CookieCategoryRepository'
+            $cookieRepository: '@WSC\SuluCookieConsentBundle\Repository\CookieRepository'
+            $config:
+                enabled: '%wsc_cookie_consent.enabled%'
+                banner_position: '%wsc_cookie_consent.banner_position%'
+                banner_layout: '%wsc_cookie_consent.banner_layout%'
+                theme: '%wsc_cookie_consent.theme%'
+                border_radius: '%wsc_cookie_consent.border_radius%'
+                flip_buttons: '%wsc_cookie_consent.flip_buttons%'
+                equal_weight_buttons: '%wsc_cookie_consent.equal_weight_buttons%'
+                disable_page_interaction: '%wsc_cookie_consent.disable_page_interaction%'
+                cookie_expires_days: '%wsc_cookie_consent.cookie_expires_days%'
+                show_preferences_button: '%wsc_cookie_consent.show_preferences_button%'
+                preferences_button_position: '%wsc_cookie_consent.preferences_button_position%'
+                preferences_button_icon: '%wsc_cookie_consent.preferences_button_icon%'
+                custom_background_color: '%wsc_cookie_consent.custom_background_color%'
+                custom_text_color: '%wsc_cookie_consent.custom_text_color%'
+                custom_primary_button_bg_color: '%wsc_cookie_consent.custom_primary_button_bg_color%'
+                custom_primary_button_text_color: '%wsc_cookie_consent.custom_primary_button_text_color%'
+                custom_secondary_button_bg_color: '%wsc_cookie_consent.custom_secondary_button_bg_color%'
+                custom_secondary_button_text_color: '%wsc_cookie_consent.custom_secondary_button_text_color%'
+                google_consent_mode: '%wsc_cookie_consent.google_consent_mode%'
+                google_tag_manager_events: '%wsc_cookie_consent.google_tag_manager_events%'
+                matomo_tag_manager_events: '%wsc_cookie_consent.matomo_tag_manager_events%'
