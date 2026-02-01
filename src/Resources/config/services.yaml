@@ -37,20 +37,32 @@ services:
 
     # Admin Controllers
     WSC\SuluCookieConsentBundle\Controller\Admin\CookieCategoryController:
+        public: true
         tags:
+            - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
             - { name: sulu.context, context: admin }
 
     WSC\SuluCookieConsentBundle\Controller\Admin\CookieController:
+        public: true
         tags:
+            - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
             - { name: sulu.context, context: admin }
 
     WSC\SuluCookieConsentBundle\Controller\Admin\ImportExportController:
+        public: true
         tags:
+            - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
             - { name: sulu.context, context: admin }
 
     # Website Controllers
     WSC\SuluCookieConsentBundle\Controller\Website\CookieConsentController:
+        public: true
         tags:
+            - { name: container.service_subscriber }
+            - { name: controller.service_arguments }
             - { name: sulu.context, context: website }
 
     # Twig Extension
