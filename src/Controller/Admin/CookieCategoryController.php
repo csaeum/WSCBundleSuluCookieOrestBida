@@ -8,7 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use FOS\RestBundle\View\View;
 use FOS\RestBundle\View\ViewHandlerInterface;
 use Sulu\Component\Rest\AbstractRestController;
-use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactory;
+use Sulu\Component\Rest\ListBuilder\Doctrine\DoctrineListBuilderFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\Metadata\FieldDescriptorFactoryInterface;
 use Sulu\Component\Rest\ListBuilder\PaginatedRepresentation;
 use Sulu\Component\Rest\RestHelperInterface;
@@ -23,7 +23,7 @@ class CookieCategoryController extends AbstractRestController
     public function __construct(
         private CookieCategoryRepository $repository,
         private EntityManagerInterface $entityManager,
-        private DoctrineListBuilderFactory $listBuilderFactory,
+        private DoctrineListBuilderFactoryInterface $listBuilderFactory,
         private FieldDescriptorFactoryInterface $fieldDescriptorFactory,
         private RestHelperInterface $restHelper,
         ViewHandlerInterface $viewHandler,
