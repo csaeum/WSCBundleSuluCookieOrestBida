@@ -27,14 +27,12 @@
                     </meta>
                 </property>
 
-                <property name="categoryId" type="single_select" mandatory="true">
+                <property name="categoryId" type="single_selection" mandatory="true">
                     <meta>
                         <title>wsc_cookie_consent.category</title>
                     </meta>
                     <params>
                         <param name="resource_key" value="cookie_categories"/>
-                        <param name="display_property" value="name"/>
-                        <param name="id_property" value="id"/>
                     </params>
                 </property>
 
