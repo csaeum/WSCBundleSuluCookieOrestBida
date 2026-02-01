@@ -115,8 +115,20 @@ class CookieController extends AbstractRestController
 
     private function mapDataToEntity(array $data, Cookie $cookie, string $locale): void
     {
-        if (isset($data['categoryId'])) {
-            $category = $this->categoryRepository->find((int) $data['categoryId']);
+        // Handle category - can be categoryId (int) or category (object with id)
+        $categoryId = null;
+        if (isset($data['category'])) {
+            if (is_array($data['category']) && isset($data['category']['id'])) {
+                $categoryId = (int) $data['category']['id'];
+            } elseif (is_numeric($data['category'])) {
+                $categoryId = (int) $data['category'];
+            }
+        } elseif (isset($data['categoryId'])) {
+            $categoryId = (int) $data['categoryId'];
+        }
+
+        if ($categoryId !== null) {
+            $category = $this->categoryRepository->find($categoryId);
             if ($category) {
                 $cookie->setCategory($category);
             }
@@ -237,9 +249,21 @@ class CookieController extends AbstractRestController
             ];
         }
 
+        $categoryData = null;
+        if ($cookie->getCategory()) {
+            $cat = $cookie->getCategory();
+            $cat->setLocale($locale);
+            $categoryData = [
+                'id' => $cat->getId(),
+                'name' => $cat->getName(),
+                'technicalName' => $cat->getTechnicalName(),
+            ];
+        }
+
         return [
             'id' => $cookie->getId(),
-            'categoryId' => $cookie->getCategory()?->getId(),
+            'category' => $categoryData,
+            'categoryId' => $cookie->getCategory()?->getId(), // Keep for backwards compatibility
             'categoryName' => $cookie->getCategory()?->setLocale($locale)->getName(),
             'technicalName' => $cookie->getTechnicalName(),
             'provider' => $cookie->getProvider(),

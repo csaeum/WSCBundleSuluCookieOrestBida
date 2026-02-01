@@ -74,6 +74,29 @@ class WSCCookieConsentExtension extends Extension implements PrependExtensionInt
                         ],
                     ],
                 ],
+                'field_type_options' => [
+                    'single_selection' => [
+                        'single_cookie_category_selection' => [
+                            'default_type' => 'auto_complete',
+                            'resource_key' => 'cookie_categories',
+                            'types' => [
+                                'auto_complete' => [
+                                    'display_property' => 'name',
+                                    'id_property' => 'id',
+                                    'search_properties' => ['name', 'technicalName'],
+                                ],
+                                'list_overlay' => [
+                                    'adapter' => 'table',
+                                    'list_key' => 'cookie_categories',
+                                    'display_properties' => ['name'],
+                                    'icon' => 'su-tag',
+                                    'empty_text' => 'wsc_cookie_consent.no_category_selected',
+                                    'overlay_title' => 'wsc_cookie_consent.cookie_categories',
+                                ],
+                            ],
+                        ],
+                    ],
+                ],
             ]);
         }
     }

@@ -12,6 +12,7 @@ wsc_cookie_consent:
     read_only_info: "Kategorie kann nicht deaktiviert werden (z.B. für notwendige Cookies)"
     position: "Position"
     category: "Kategorie"
+    no_category_selected: "Keine Kategorie ausgewählt"
     category_necessary: "Notwendig"
     category_comfort: "Komfort"
     category_statistics: "Statistik"

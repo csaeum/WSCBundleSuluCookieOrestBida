@@ -27,14 +27,10 @@
                     </meta>
                 </property>
 
-                <property name="categoryId" type="single_select" mandatory="true">
+                <property name="category" type="single_cookie_category_selection" mandatory="true">
                     <meta>
                         <title>wsc_cookie_consent.category</title>
                     </meta>
-                    <params>
-                        <param name="default_value" type="expression" value="service('WSC\\SuluCookieConsentBundle\\Content\\Select\\CookieCategorySelect').getDefaultValue()"/>
-                        <param name="values" type="expression" value="service('WSC\\SuluCookieConsentBundle\\Content\\Select\\CookieCategorySelect').getValues(locale)"/>
-                    </params>
                 </property>
 
                 <property name="description" type="text_area">

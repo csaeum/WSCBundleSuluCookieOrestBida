@@ -12,6 +12,7 @@ wsc_cookie_consent:
     read_only_info: "Category cannot be disabled (e.g. for necessary cookies)"
     position: "Position"
     category: "Category"
+    no_category_selected: "No category selected"
     category_necessary: "Necessary"
     category_comfort: "Comfort"
     category_statistics: "Statistics"
