@@ -1,5 +1,10 @@
 {#
     WSC Cookie Consent Snippet
-    Use this snippet in your Sulu pages to include the cookie consent banner
+    This snippet renders the Orest Bida Cookie Consent banner with configuration from Sulu Admin
+
+    Usage: Include this snippet area in your base template:
+    {% include sulu_snippet_load_by_area('cookie-consent') %}
 #}
-{{ sulu_cookie_consent()|raw }}
+{% if content.enabled|default(true) %}
+    {{ wsc_cookie_consent_render(content)|raw }}
+{% endif %}

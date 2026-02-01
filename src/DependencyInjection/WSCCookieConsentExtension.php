@@ -32,6 +32,15 @@ class WSCCookieConsentExtension extends Extension implements PrependExtensionInt
 
     public function prepend(ContainerBuilder $container): void
     {
+        // Register Twig namespace for templates
+        if ($container->hasExtension('twig')) {
+            $container->prependExtensionConfig('twig', [
+                'paths' => [
+                    __DIR__ . '/../Resources/templates' => 'WSCCookieConsent',
+                ],
+            ]);
+        }
+
         if ($container->hasExtension('doctrine')) {
             $container->prependExtensionConfig('doctrine', [
                 'orm' => [
@@ -42,6 +51,22 @@ class WSCCookieConsentExtension extends Extension implements PrependExtensionInt
                             'prefix' => 'WSC\SuluCookieConsentBundle\Entity',
                             'alias' => 'WSCCookieConsentBundle',
                             'is_bundle' => false,
+                        ],
+                    ],
+                ],
+            ]);
+        }
+
+        // Register snippet templates
+        if ($container->hasExtension('sulu_core')) {
+            $container->prependExtensionConfig('sulu_core', [
+                'content' => [
+                    'structure' => [
+                        'paths' => [
+                            'wsc_cookie_consent_snippets' => [
+                                'path' => __DIR__ . '/../Resources/templates/snippets',
+                                'type' => 'snippet',
+                            ],
                         ],
                     ],
                 ],

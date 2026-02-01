@@ -21,6 +21,7 @@ class CookieConsentExtension extends AbstractExtension
             new TwigFunction('sulu_cookie_consent', [$this, 'renderCookieConsent'], ['is_safe' => ['html']]),
             new TwigFunction('sulu_cookie_consent_config', [$this, 'getConfig']),
             new TwigFunction('sulu_cookie_consent_enabled', [$this, 'isEnabled']),
+            new TwigFunction('wsc_cookie_consent_render', [$this, 'renderFromSnippet'], ['is_safe' => ['html']]),
         ];
     }
 
@@ -34,6 +35,23 @@ class CookieConsentExtension extends AbstractExtension
         return $this->config;
     }
 
+    /**
+     * Render cookie consent from snippet content data
+     */
+    public function renderFromSnippet(array $snippetContent = []): string
+    {
+        // Merge snippet content with default config
+        $config = $this->buildConfigFromSnippet($snippetContent);
+
+        if (!($config['enabled'] ?? true)) {
+            return '';
+        }
+
+        $configJson = json_encode($config, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
+
+        return $this->generateHtmlOutput($configJson, $config);
+    }
+
     public function renderCookieConsent(): string
     {
         if (!$this->enabled) {
@@ -42,27 +60,85 @@ class CookieConsentExtension extends AbstractExtension
 
         $configJson = json_encode($this->config, JSON_HEX_TAG | JSON_HEX_APOS | JSON_HEX_QUOT | JSON_HEX_AMP);
 
+        return $this->generateHtmlOutput($configJson, $this->config);
+    }
+
+    private function buildConfigFromSnippet(array $snippet): array
+    {
+        return [
+            'enabled' => $snippet['enabled'] ?? true,
+            'title' => $snippet['title'] ?? null,
+            'description' => $snippet['description'] ?? null,
+            'privacy_policy_url' => $this->extractPageUrl($snippet['privacyPolicyPage'] ?? null),
+            'imprint_url' => $this->extractPageUrl($snippet['imprintPage'] ?? null),
+            'banner_position' => $snippet['bannerPosition'] ?? $this->config['banner_position'] ?? 'bottom',
+            'banner_layout' => $snippet['bannerLayout'] ?? $this->config['banner_layout'] ?? 'box',
+            'theme' => $snippet['theme'] ?? $this->config['theme'] ?? 'light',
+            'flip_buttons' => $snippet['flipButtons'] ?? $this->config['flip_buttons'] ?? false,
+            'equal_weight_buttons' => $snippet['equalWeightButtons'] ?? $this->config['equal_weight_buttons'] ?? true,
+            'disable_page_interaction' => $snippet['disablePageInteraction'] ?? $this->config['disable_page_interaction'] ?? false,
+            'cookie_expires_days' => (int) ($snippet['cookieExpiresDays'] ?? $this->config['cookie_expires_days'] ?? 365),
+            'revision' => (int) ($snippet['revision'] ?? 1),
+            'show_preferences_button' => $snippet['showPreferencesButton'] ?? $this->config['show_preferences_button'] ?? false,
+            'preferences_button_position' => $snippet['preferencesButtonPosition'] ?? $this->config['preferences_button_position'] ?? 'bottom-left',
+            'preferences_button_icon' => $snippet['preferencesButtonIcon'] ?? $this->config['preferences_button_icon'] ?? '🍪',
+            'google_consent_mode' => $snippet['googleConsentMode'] ?? $this->config['google_consent_mode'] ?? false,
+            'google_tag_manager_events' => $snippet['googleTagManagerEvents'] ?? $this->config['google_tag_manager_events'] ?? false,
+            'matomo_tag_manager_events' => $snippet['matomoTagManagerEvents'] ?? $this->config['matomo_tag_manager_events'] ?? false,
+            // Button texts from snippet
+            'accept_all_btn' => $snippet['acceptAllButtonText'] ?? null,
+            'accept_necessary_btn' => $snippet['acceptNecessaryButtonText'] ?? null,
+            'show_preferences_btn' => $snippet['showPreferencesButtonText'] ?? null,
+            'save_preferences_btn' => $snippet['savePreferencesButtonText'] ?? null,
+        ];
+    }
+
+    private function extractPageUrl($page): ?string
+    {
+        if (is_array($page) && isset($page['url'])) {
+            return $page['url'];
+        }
+        if (is_string($page)) {
+            return $page;
+        }
+        return null;
+    }
+
+    private function generateHtmlOutput(string $configJson, array $config): string
+    {
+        $privacyUrl = json_encode($config['privacy_policy_url'] ?? '');
+        $imprintUrl = json_encode($config['imprint_url'] ?? '');
+
         return <<<HTML
-<!-- WSC Cookie Consent -->
+<!-- WSC Cookie Consent (Orest Bida) -->
 <link rel="stylesheet" href="/bundles/wsccookieconsent/css/cookieconsent.css">
-<script src="/bundles/wsccookieconsent/js/cookieconsent.umd.js"></script>
+<script defer src="/bundles/wsccookieconsent/js/cookieconsent.umd.js"></script>
 <script>
 (function() {
     'use strict';
 
     const wscConfig = {$configJson};
+    const privacyUrl = {$privacyUrl};
+    const imprintUrl = {$imprintUrl};
 
     async function initCookieConsent() {
+        // Wait for CookieConsent to be available
+        if (typeof CookieConsent === 'undefined') {
+            setTimeout(initCookieConsent, 50);
+            return;
+        }
+
         try {
             const response = await fetch('/api/cookie-consent/config');
             const data = await response.json();
 
-            if (!data.config || !data.config.enabled) {
+            if (!data.categories || data.categories.length === 0) {
+                console.warn('Cookie Consent: No categories found');
                 return;
             }
 
             const categories = {};
-            const services = {};
+            const translations = { de: { sections: [] }, en: { sections: [] } };
 
             // Build categories from API data
             data.categories.forEach(cat => {
@@ -70,42 +146,105 @@ class CookieConsentExtension extends AbstractExtension
                     enabled: cat.enabled,
                     readOnly: cat.readOnly
                 };
-            });
 
-            // Group cookies by category
-            const cookiesByCategory = {};
-            data.cookies.forEach(cookie => {
-                if (!cookiesByCategory[cookie.categoryTechnicalName]) {
-                    cookiesByCategory[cookie.categoryTechnicalName] = [];
-                }
-                cookiesByCategory[cookie.categoryTechnicalName].push(cookie);
-            });
-
-            // Build services for each category
-            Object.keys(cookiesByCategory).forEach(categoryName => {
-                services[categoryName] = {};
-                cookiesByCategory[categoryName].forEach(cookie => {
-                    services[categoryName][cookie.technicalName] = {
-                        label: buildServiceLabel(cookie),
-                        onAccept: () => handleServiceAccept(cookie, data.config),
-                        onReject: () => handleServiceReject(cookie, data.config)
+                // Build services for this category
+                const categoryServices = {};
+                data.cookies.filter(c => c.categoryTechnicalName === cat.technicalName).forEach(cookie => {
+                    categoryServices[cookie.technicalName] = {
+                        label: cookie.name,
+                        onAccept: () => handleServiceAccept(cookie),
+                        onReject: () => handleServiceReject(cookie),
+                        cookies: buildCookieTable(cookie)
                     };
+                });
+
+                if (Object.keys(categoryServices).length > 0) {
+                    categories[cat.technicalName].services = categoryServices;
+                }
+
+                // Add to sections for preferences modal
+                translations.de.sections.push({
+                    title: cat.name,
+                    description: cat.description || '',
+                    linkedCategory: cat.technicalName,
+                    cookieTable: buildCategoryTable(data.cookies.filter(c => c.categoryTechnicalName === cat.technicalName))
+                });
+
+                translations.en.sections.push({
+                    title: cat.name,
+                    description: cat.description || '',
+                    linkedCategory: cat.technicalName,
+                    cookieTable: buildCategoryTable(data.cookies.filter(c => c.categoryTechnicalName === cat.technicalName))
                 });
             });
 
             // Get current language
             const lang = document.documentElement.lang || 'de';
 
+            // Build description with privacy/imprint links
+            let descriptionDe = wscConfig.description || 'Wir verwenden Cookies und ähnliche Technologien auf unserer Website und verarbeiten personenbezogene Daten über dich, wie deine IP-Adresse. Wir teilen diese Daten auch mit Dritten.';
+            let descriptionEn = wscConfig.description || 'We use cookies and similar technologies on our website and process personal data about you, such as your IP address. We also share this data with third parties.';
+
+            if (privacyUrl || imprintUrl) {
+                const linksDe = [];
+                const linksEn = [];
+                if (privacyUrl) {
+                    linksDe.push('<a href="' + privacyUrl + '">Datenschutzerklärung</a>');
+                    linksEn.push('<a href="' + privacyUrl + '">Privacy Policy</a>');
+                }
+                if (imprintUrl) {
+                    linksDe.push('<a href="' + imprintUrl + '">Impressum</a>');
+                    linksEn.push('<a href="' + imprintUrl + '">Imprint</a>');
+                }
+                descriptionDe += ' ' + linksDe.join(' | ');
+                descriptionEn += ' ' + linksEn.join(' | ');
+            }
+
+            // Set translations
+            translations.de.consentModal = {
+                title: wscConfig.title || 'Cookie-Einstellungen',
+                description: descriptionDe,
+                acceptAllBtn: wscConfig.accept_all_btn || 'Alle akzeptieren',
+                acceptNecessaryBtn: wscConfig.accept_necessary_btn || 'Nur Notwendige',
+                showPreferencesBtn: wscConfig.show_preferences_btn || 'Einstellungen verwalten'
+            };
+
+            translations.de.preferencesModal = {
+                title: 'Cookie-Einstellungen',
+                acceptAllBtn: wscConfig.accept_all_btn || 'Alle akzeptieren',
+                acceptNecessaryBtn: wscConfig.accept_necessary_btn || 'Nur Notwendige',
+                savePreferencesBtn: wscConfig.save_preferences_btn || 'Auswahl speichern',
+                closeIconLabel: 'Schließen',
+                sections: translations.de.sections
+            };
+
+            translations.en.consentModal = {
+                title: wscConfig.title || 'Cookie Settings',
+                description: descriptionEn,
+                acceptAllBtn: wscConfig.accept_all_btn || 'Accept All',
+                acceptNecessaryBtn: wscConfig.accept_necessary_btn || 'Necessary Only',
+                showPreferencesBtn: wscConfig.show_preferences_btn || 'Manage Preferences'
+            };
+
+            translations.en.preferencesModal = {
+                title: 'Cookie Settings',
+                acceptAllBtn: wscConfig.accept_all_btn || 'Accept All',
+                acceptNecessaryBtn: wscConfig.accept_necessary_btn || 'Necessary Only',
+                savePreferencesBtn: wscConfig.save_preferences_btn || 'Save Preferences',
+                closeIconLabel: 'Close',
+                sections: translations.en.sections
+            };
+
             // Initialize CookieConsent
             CookieConsent.run({
-                revision: parseInt(data.revision, 16),
+                revision: wscConfig.revision || 1,
 
                 guiOptions: {
                     consentModal: {
-                        layout: data.config.banner_layout || 'box',
-                        position: data.config.banner_position || 'bottom center',
-                        flipButtons: data.config.flip_buttons || false,
-                        equalWeightButtons: data.config.equal_weight_buttons !== false
+                        layout: wscConfig.banner_layout || 'box',
+                        position: wscConfig.banner_position || 'bottom',
+                        flipButtons: wscConfig.flip_buttons || false,
+                        equalWeightButtons: wscConfig.equal_weight_buttons !== false
                     },
                     preferencesModal: {
                         layout: 'box',
@@ -115,70 +254,39 @@ class CookieConsentExtension extends AbstractExtension
                     }
                 },
 
+                disablePageInteraction: wscConfig.disable_page_interaction || false,
+
+                cookie: {
+                    name: 'cc_cookie',
+                    expiresAfterDays: wscConfig.cookie_expires_days || 365
+                },
+
                 categories: categories,
-                services: services,
 
                 language: {
                     default: lang,
                     autoDetect: 'document',
-                    translations: {
-                        de: {
-                            consentModal: {
-                                title: 'Cookie-Einstellungen',
-                                description: 'Wir verwenden Cookies und ähnliche Technologien auf unserer Website und verarbeiten personenbezogene Daten von dir (z.B. IP-Adresse), um z.B. Inhalte und Anzeigen zu personalisieren, Medien von Drittanbietern einzubinden oder Zugriffe auf unsere Website zu analysieren.',
-                                acceptAllBtn: 'Alle akzeptieren',
-                                acceptNecessaryBtn: 'Nur Notwendige',
-                                showPreferencesBtn: 'Einstellungen verwalten'
-                            },
-                            preferencesModal: {
-                                title: 'Cookie-Einstellungen',
-                                acceptAllBtn: 'Alle akzeptieren',
-                                acceptNecessaryBtn: 'Nur Notwendige',
-                                savePreferencesBtn: 'Auswahl speichern',
-                                closeIconLabel: 'Schließen',
-                                sections: buildPreferencesSections(data.categories, lang)
-                            }
-                        },
-                        en: {
-                            consentModal: {
-                                title: 'Cookie Settings',
-                                description: 'We use cookies and similar technologies on our website and process personal data about you (e.g. IP address), for example, to personalize content and ads, to integrate media from third-party providers or to analyze access to our website.',
-                                acceptAllBtn: 'Accept All',
-                                acceptNecessaryBtn: 'Necessary Only',
-                                showPreferencesBtn: 'Manage Preferences'
-                            },
-                            preferencesModal: {
-                                title: 'Cookie Settings',
-                                acceptAllBtn: 'Accept All',
-                                acceptNecessaryBtn: 'Necessary Only',
-                                savePreferencesBtn: 'Save Preferences',
-                                closeIconLabel: 'Close',
-                                sections: buildPreferencesSections(data.categories, lang)
-                            }
-                        }
-                    }
+                    translations: translations
                 },
 
                 onFirstConsent: () => {
-                    pushTagManagerEvent('cookie_consent_given', data.config);
+                    pushTagManagerEvent('cookie_consent_given');
+                    updateGoogleConsentMode();
                 },
 
                 onChange: ({changedCategories, changedServices}) => {
-                    pushTagManagerEvent('cookie_consent_update', data.config);
-                    updateGoogleConsentMode(data.config);
-                },
-
-                onModalShow: () => {},
-                onModalHide: () => {}
+                    pushTagManagerEvent('cookie_consent_update');
+                    updateGoogleConsentMode();
+                }
             });
 
             // Show preferences button if configured
-            if (data.config.show_preferences_button) {
-                createPreferencesButton(data.config);
+            if (wscConfig.show_preferences_button) {
+                createPreferencesButton();
             }
 
             // Initialize Google Consent Mode if enabled
-            if (data.config.google_consent_mode) {
+            if (wscConfig.google_consent_mode) {
                 initGoogleConsentMode();
             }
 
@@ -187,85 +295,42 @@ class CookieConsentExtension extends AbstractExtension
         }
     }
 
-    function buildServiceLabel(cookie) {
-        let html = '<div class="cc-service-info">';
-
-        if (cookie.description) {
-            html += '<p class="cc-service-desc">' + escapeHtml(cookie.description) + '</p>';
+    function buildCookieTable(cookie) {
+        if (!cookie.cookieItems || cookie.cookieItems.length === 0) {
+            return { headers: [], body: [] };
         }
 
-        html += '<ul class="cc-service-details">';
-
-        if (cookie.provider) {
-            html += '<li><strong>Anbieter:</strong> ' + escapeHtml(cookie.provider) + '</li>';
-        }
-
-        if (cookie.dataCollected) {
-            html += '<li><strong>Erhobene Daten:</strong> ' + escapeHtml(cookie.dataCollected) + '</li>';
-        }
-
-        if (cookie.dataPurpose) {
-            html += '<li><strong>Zweck:</strong> ' + escapeHtml(cookie.dataPurpose) + '</li>';
-        }
-
-        const legalBasisLabels = {
-            'consent': 'Einwilligung',
-            'legitimate_interest': 'Berechtigtes Interesse',
-            'contract': 'Vertragserfüllung',
-            'legal_obligation': 'Rechtliche Verpflichtung'
+        return {
+            headers: ['Name', 'Lebensdauer', 'Beschreibung'],
+            body: cookie.cookieItems.map(item => [
+                item.name || '',
+                item.lifetime || '-',
+                item.description || ''
+            ])
         };
-        if (cookie.legalBasis && legalBasisLabels[cookie.legalBasis]) {
-            html += '<li><strong>Rechtsgrundlage:</strong> ' + legalBasisLabels[cookie.legalBasis] + '</li>';
-        }
-
-        const locationLabels = {
-            'germany': 'Deutschland',
-            'eu': 'EU/EWR',
-            'usa': 'USA',
-            'worldwide': 'Weltweit'
-        };
-        if (cookie.processingLocation && locationLabels[cookie.processingLocation]) {
-            html += '<li><strong>Verarbeitungsort:</strong> ' + locationLabels[cookie.processingLocation] + '</li>';
-        }
-
-        if (cookie.privacyPolicyUrl) {
-            html += '<li><a href="' + escapeHtml(cookie.privacyPolicyUrl) + '" target="_blank" rel="noopener">Datenschutzerklärung</a></li>';
-        }
-
-        html += '</ul>';
-
-        // Cookie table
-        if (cookie.cookieItems && cookie.cookieItems.length > 0) {
-            html += '<table class="cc-cookie-table"><thead><tr><th>Cookie</th><th>Lebensdauer</th><th>Beschreibung</th></tr></thead><tbody>';
-            cookie.cookieItems.forEach(item => {
-                html += '<tr>';
-                html += '<td>' + escapeHtml(item.name) + '</td>';
-                html += '<td>' + escapeHtml(item.lifetime || '-') + '</td>';
-                html += '<td>' + escapeHtml(item.description || '-') + '</td>';
-                html += '</tr>';
-            });
-            html += '</tbody></table>';
-        }
-
-        html += '</div>';
-        return html;
     }
 
-    function buildPreferencesSections(categories, lang) {
-        const sections = [];
+    function buildCategoryTable(cookies) {
+        if (!cookies || cookies.length === 0) {
+            return { headers: [], body: [] };
+        }
 
-        categories.forEach(cat => {
-            sections.push({
-                title: cat.name,
-                description: cat.description,
-                linkedCategory: cat.technicalName
-            });
+        const rows = [];
+        cookies.forEach(cookie => {
+            rows.push([
+                cookie.name,
+                cookie.provider || '-',
+                cookie.description || ''
+            ]);
         });
 
-        return sections;
+        return {
+            headers: ['Name', 'Anbieter', 'Beschreibung'],
+            body: rows
+        };
     }
 
-    function handleServiceAccept(cookie, config) {
+    function handleServiceAccept(cookie) {
         // Load script if defined
         if (cookie.scriptUrl) {
             const script = document.createElement('script');
@@ -280,7 +345,7 @@ class CookieConsentExtension extends AbstractExtension
         }));
 
         // Push tag manager events
-        if (config.google_tag_manager_events && window.dataLayer) {
+        if (wscConfig.google_tag_manager_events && window.dataLayer) {
             window.dataLayer.push({
                 event: 'cookie_service_accept',
                 cookie_service: cookie.technicalName,
@@ -288,7 +353,7 @@ class CookieConsentExtension extends AbstractExtension
             });
         }
 
-        if (config.matomo_tag_manager_events && window._mtm) {
+        if (wscConfig.matomo_tag_manager_events && window._mtm) {
             window._mtm.push({
                 event: 'cookieServiceAccept',
                 cookieService: cookie.technicalName,
@@ -297,14 +362,12 @@ class CookieConsentExtension extends AbstractExtension
         }
     }
 
-    function handleServiceReject(cookie, config) {
-        // Dispatch custom event
+    function handleServiceReject(cookie) {
         document.dispatchEvent(new CustomEvent('cookieServiceReject', {
             detail: { service: cookie.technicalName, category: cookie.categoryTechnicalName }
         }));
 
-        // Push tag manager events
-        if (config.google_tag_manager_events && window.dataLayer) {
+        if (wscConfig.google_tag_manager_events && window.dataLayer) {
             window.dataLayer.push({
                 event: 'cookie_service_reject',
                 cookie_service: cookie.technicalName,
@@ -312,7 +375,7 @@ class CookieConsentExtension extends AbstractExtension
             });
         }
 
-        if (config.matomo_tag_manager_events && window._mtm) {
+        if (wscConfig.matomo_tag_manager_events && window._mtm) {
             window._mtm.push({
                 event: 'cookieServiceReject',
                 cookieService: cookie.technicalName,
@@ -321,14 +384,13 @@ class CookieConsentExtension extends AbstractExtension
         }
     }
 
-    function pushTagManagerEvent(eventName, config) {
-        if (config.google_tag_manager_events && window.dataLayer) {
+    function pushTagManagerEvent(eventName) {
+        if (wscConfig.google_tag_manager_events && window.dataLayer) {
             window.dataLayer.push({ event: eventName });
         }
 
-        if (config.matomo_tag_manager_events && window._mtm) {
-            const matomoEventName = eventName.replace(/_/g, '').replace(/^cookie/, 'cookie');
-            window._mtm.push({ event: matomoEventName });
+        if (wscConfig.matomo_tag_manager_events && window._mtm) {
+            window._mtm.push({ event: eventName });
         }
     }
 
@@ -347,15 +409,15 @@ class CookieConsentExtension extends AbstractExtension
         });
     }
 
-    function updateGoogleConsentMode(config) {
-        if (!config.google_consent_mode) return;
+    function updateGoogleConsentMode() {
+        if (!wscConfig.google_consent_mode) return;
 
         window.dataLayer = window.dataLayer || [];
         function gtag() { dataLayer.push(arguments); }
 
-        const analyticsAccepted = CookieConsent.acceptedCategory('analytics');
+        const analyticsAccepted = CookieConsent.acceptedCategory('statistics') || CookieConsent.acceptedCategory('analytics');
         const marketingAccepted = CookieConsent.acceptedCategory('marketing');
-        const comfortAccepted = CookieConsent.acceptedCategory('comfort');
+        const comfortAccepted = CookieConsent.acceptedCategory('comfort') || CookieConsent.acceptedCategory('functionality');
 
         gtag('consent', 'update', {
             'ad_storage': marketingAccepted ? 'granted' : 'denied',
@@ -367,20 +429,13 @@ class CookieConsentExtension extends AbstractExtension
         });
     }
 
-    function createPreferencesButton(config) {
+    function createPreferencesButton() {
         const btn = document.createElement('button');
-        btn.className = 'cc-preferences-btn cc-preferences-btn--' + (config.preferences_button_position || 'bottom-left');
-        btn.innerHTML = config.preferences_button_icon || '🍪';
+        btn.className = 'cc-preferences-btn cc-preferences-btn--' + (wscConfig.preferences_button_position || 'bottom-left');
+        btn.innerHTML = wscConfig.preferences_button_icon || '🍪';
         btn.setAttribute('aria-label', 'Cookie-Einstellungen öffnen');
         btn.onclick = () => CookieConsent.showPreferences();
         document.body.appendChild(btn);
-    }
-
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
     }
 
     // Initialize when DOM is ready
@@ -399,8 +454,8 @@ class CookieConsentExtension extends AbstractExtension
     height: 48px;
     border: none;
     border-radius: 50%;
-    background: #0d6efd;
-    color: #fff;
+    background: var(--cc-btn-primary-bg, #0d6efd);
+    color: var(--cc-btn-primary-text, #fff);
     font-size: 24px;
     cursor: pointer;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
@@ -414,14 +469,6 @@ class CookieConsentExtension extends AbstractExtension
 .cc-preferences-btn--bottom-right { bottom: 20px; right: 20px; }
 .cc-preferences-btn--top-left { top: 20px; left: 20px; }
 .cc-preferences-btn--top-right { top: 20px; right: 20px; }
-
-.cc-service-info { font-size: 14px; }
-.cc-service-desc { margin-bottom: 10px; }
-.cc-service-details { margin: 10px 0; padding-left: 20px; }
-.cc-service-details li { margin-bottom: 5px; }
-.cc-cookie-table { width: 100%; border-collapse: collapse; margin-top: 10px; font-size: 12px; }
-.cc-cookie-table th, .cc-cookie-table td { border: 1px solid #ddd; padding: 6px; text-align: left; }
-.cc-cookie-table th { background: #f5f5f5; }
 </style>
 <!-- /WSC Cookie Consent -->
 HTML;

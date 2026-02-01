@@ -1,0 +1,335 @@
+<?xml version="1.0" ?>
+<template xmlns="http://schemas.sulu.io/template/template"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://schemas.sulu.io/template/template http://schemas.sulu.io/template/template-1.0.xsd">
+
+    <key>cookie-consent</key>
+    <view>@WSCCookieConsent/snippets/cookie-consent</view>
+    <controller>Sulu\Bundle\WebsiteBundle\Controller\SnippetController::renderAction</controller>
+    <cacheLifetime>86400</cacheLifetime>
+
+    <meta>
+        <title lang="de">Cookie Consent Banner</title>
+        <title lang="en">Cookie Consent Banner</title>
+    </meta>
+
+    <properties>
+        <section name="general">
+            <meta>
+                <title lang="de">Allgemein</title>
+                <title lang="en">General</title>
+            </meta>
+            <properties>
+                <property name="enabled" type="checkbox" mandatory="false">
+                    <meta>
+                        <title lang="de">Cookie Banner aktivieren</title>
+                        <title lang="en">Enable Cookie Banner</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="true"/>
+                    </params>
+                </property>
+
+                <property name="title" type="text_line">
+                    <meta>
+                        <title lang="de">Titel</title>
+                        <title lang="en">Title</title>
+                    </meta>
+                </property>
+
+                <property name="description" type="text_area">
+                    <meta>
+                        <title lang="de">Beschreibung</title>
+                        <title lang="en">Description</title>
+                        <info_text lang="de">Der Text der im Cookie-Banner angezeigt wird</info_text>
+                        <info_text lang="en">The text shown in the cookie banner</info_text>
+                    </meta>
+                </property>
+
+                <property name="privacyPolicyPage" type="single_page_selection">
+                    <meta>
+                        <title lang="de">Datenschutz-Seite</title>
+                        <title lang="en">Privacy Policy Page</title>
+                    </meta>
+                </property>
+
+                <property name="imprintPage" type="single_page_selection">
+                    <meta>
+                        <title lang="de">Impressum-Seite</title>
+                        <title lang="en">Imprint Page</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="appearance">
+            <meta>
+                <title lang="de">Aussehen</title>
+                <title lang="en">Appearance</title>
+            </meta>
+            <properties>
+                <property name="bannerPosition" type="single_select">
+                    <meta>
+                        <title lang="de">Banner-Position</title>
+                        <title lang="en">Banner Position</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="bottom"/>
+                        <param name="values" type="collection">
+                            <param name="bottom">
+                                <param name="title" lang="de">Unten</param>
+                                <param name="title" lang="en">Bottom</param>
+                            </param>
+                            <param name="bottom left">
+                                <param name="title" lang="de">Unten links</param>
+                                <param name="title" lang="en">Bottom left</param>
+                            </param>
+                            <param name="bottom right">
+                                <param name="title" lang="de">Unten rechts</param>
+                                <param name="title" lang="en">Bottom right</param>
+                            </param>
+                            <param name="middle">
+                                <param name="title" lang="de">Mitte (Modal)</param>
+                                <param name="title" lang="en">Middle (Modal)</param>
+                            </param>
+                            <param name="top">
+                                <param name="title" lang="de">Oben</param>
+                                <param name="title" lang="en">Top</param>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+
+                <property name="bannerLayout" type="single_select">
+                    <meta>
+                        <title lang="de">Banner-Layout</title>
+                        <title lang="en">Banner Layout</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="box"/>
+                        <param name="values" type="collection">
+                            <param name="box">
+                                <param name="title" lang="de">Box</param>
+                                <param name="title" lang="en">Box</param>
+                            </param>
+                            <param name="box wide">
+                                <param name="title" lang="de">Box (breit)</param>
+                                <param name="title" lang="en">Box (wide)</param>
+                            </param>
+                            <param name="box inline">
+                                <param name="title" lang="de">Box (inline)</param>
+                                <param name="title" lang="en">Box (inline)</param>
+                            </param>
+                            <param name="cloud">
+                                <param name="title" lang="de">Cloud</param>
+                                <param name="title" lang="en">Cloud</param>
+                            </param>
+                            <param name="bar">
+                                <param name="title" lang="de">Bar</param>
+                                <param name="title" lang="en">Bar</param>
+                            </param>
+                            <param name="bar inline">
+                                <param name="title" lang="de">Bar (inline)</param>
+                                <param name="title" lang="en">Bar (inline)</param>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+
+                <property name="theme" type="single_select">
+                    <meta>
+                        <title lang="de">Farbschema</title>
+                        <title lang="en">Color Theme</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="light"/>
+                        <param name="values" type="collection">
+                            <param name="light">
+                                <param name="title" lang="de">Hell</param>
+                                <param name="title" lang="en">Light</param>
+                            </param>
+                            <param name="dark">
+                                <param name="title" lang="de">Dunkel</param>
+                                <param name="title" lang="en">Dark</param>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+
+                <property name="flipButtons" type="checkbox">
+                    <meta>
+                        <title lang="de">Buttons vertauschen</title>
+                        <title lang="en">Flip Buttons</title>
+                    </meta>
+                </property>
+
+                <property name="equalWeightButtons" type="checkbox">
+                    <meta>
+                        <title lang="de">Gleichgewichtete Buttons</title>
+                        <title lang="en">Equal Weight Buttons</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="true"/>
+                    </params>
+                </property>
+
+                <property name="disablePageInteraction" type="checkbox">
+                    <meta>
+                        <title lang="de">Seiten-Interaktion blockieren</title>
+                        <title lang="en">Disable Page Interaction</title>
+                        <info_text lang="de">Blockiert die Seite bis zur Cookie-Entscheidung</info_text>
+                        <info_text lang="en">Blocks page until cookie decision is made</info_text>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="buttons">
+            <meta>
+                <title lang="de">Button-Texte</title>
+                <title lang="en">Button Texts</title>
+            </meta>
+            <properties>
+                <property name="acceptAllButtonText" type="text_line">
+                    <meta>
+                        <title lang="de">Alle akzeptieren</title>
+                        <title lang="en">Accept All</title>
+                    </meta>
+                </property>
+
+                <property name="acceptNecessaryButtonText" type="text_line">
+                    <meta>
+                        <title lang="de">Nur Notwendige</title>
+                        <title lang="en">Necessary Only</title>
+                    </meta>
+                </property>
+
+                <property name="showPreferencesButtonText" type="text_line">
+                    <meta>
+                        <title lang="de">Einstellungen</title>
+                        <title lang="en">Preferences</title>
+                    </meta>
+                </property>
+
+                <property name="savePreferencesButtonText" type="text_line">
+                    <meta>
+                        <title lang="de">Auswahl speichern</title>
+                        <title lang="en">Save Preferences</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="preferences_button">
+            <meta>
+                <title lang="de">Einstellungen-Button</title>
+                <title lang="en">Preferences Button</title>
+            </meta>
+            <properties>
+                <property name="showPreferencesButton" type="checkbox">
+                    <meta>
+                        <title lang="de">Schwebe-Button anzeigen</title>
+                        <title lang="en">Show Floating Button</title>
+                        <info_text lang="de">Zeigt einen kleinen Button zum Öffnen der Cookie-Einstellungen</info_text>
+                    </meta>
+                </property>
+
+                <property name="preferencesButtonPosition" type="single_select">
+                    <meta>
+                        <title lang="de">Button-Position</title>
+                        <title lang="en">Button Position</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="bottom-left"/>
+                        <param name="values" type="collection">
+                            <param name="bottom-left">
+                                <param name="title" lang="de">Unten links</param>
+                                <param name="title" lang="en">Bottom left</param>
+                            </param>
+                            <param name="bottom-right">
+                                <param name="title" lang="de">Unten rechts</param>
+                                <param name="title" lang="en">Bottom right</param>
+                            </param>
+                            <param name="top-left">
+                                <param name="title" lang="de">Oben links</param>
+                                <param name="title" lang="en">Top left</param>
+                            </param>
+                            <param name="top-right">
+                                <param name="title" lang="de">Oben rechts</param>
+                                <param name="title" lang="en">Top right</param>
+                            </param>
+                        </param>
+                    </params>
+                </property>
+
+                <property name="preferencesButtonIcon" type="text_line">
+                    <meta>
+                        <title lang="de">Button-Icon</title>
+                        <title lang="en">Button Icon</title>
+                        <info_text lang="de">Emoji oder Text für den Button (Standard: 🍪)</info_text>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="tracking">
+            <meta>
+                <title lang="de">Tracking-Integration</title>
+                <title lang="en">Tracking Integration</title>
+            </meta>
+            <properties>
+                <property name="googleConsentMode" type="checkbox">
+                    <meta>
+                        <title lang="de">Google Consent Mode v2</title>
+                        <title lang="en">Google Consent Mode v2</title>
+                        <info_text lang="de">Aktiviert Google Consent Mode v2 Integration</info_text>
+                    </meta>
+                </property>
+
+                <property name="googleTagManagerEvents" type="checkbox">
+                    <meta>
+                        <title lang="de">Google Tag Manager Events</title>
+                        <title lang="en">Google Tag Manager Events</title>
+                    </meta>
+                </property>
+
+                <property name="matomoTagManagerEvents" type="checkbox">
+                    <meta>
+                        <title lang="de">Matomo Tag Manager Events</title>
+                        <title lang="en">Matomo Tag Manager Events</title>
+                    </meta>
+                </property>
+            </properties>
+        </section>
+
+        <section name="advanced">
+            <meta>
+                <title lang="de">Erweitert</title>
+                <title lang="en">Advanced</title>
+            </meta>
+            <properties>
+                <property name="cookieExpiresDays" type="number">
+                    <meta>
+                        <title lang="de">Cookie-Gültigkeit (Tage)</title>
+                        <title lang="en">Cookie Expires (Days)</title>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="365"/>
+                    </params>
+                </property>
+
+                <property name="revision" type="number">
+                    <meta>
+                        <title lang="de">Revision</title>
+                        <title lang="en">Revision</title>
+                        <info_text lang="de">Erhöhe diese Zahl um Nutzer erneut nach Zustimmung zu fragen</info_text>
+                        <info_text lang="en">Increase this number to re-ask users for consent</info_text>
+                    </meta>
+                    <params>
+                        <param name="default_value" value="1"/>
+                    </params>
+                </property>
+            </properties>
+        </section>
+    </properties>
+</template>
